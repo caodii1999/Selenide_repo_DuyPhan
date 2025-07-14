@@ -29,9 +29,10 @@ It follows the Page Object Model (POM) pattern for better structure and maintain
 
 ## Technologies Used
 
-- [Java](https://www.oracle.com/java/)
-- [Selenide](https://selenide.org/)
-- [TestNG](https://testng.org/)
+- [Java] - [Version: 21.0.7] (https://www.oracle.com/java/)
+- [Apache Maven] - [Version: 3.9.9] (https://maven.apache.org/)
+- [Selenide] - [Version: 7.9.2] (https://selenide.org/)
+- [TestNG] - [Version: 7.11.0] (https://testng.org/)
 - Page Object Model (POM)
 
 ### Prerequisites
