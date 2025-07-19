@@ -1,0 +1,27 @@
+# Ignore build and generated output
+/build/
+/target/
+/test-output/
+/downloads/
+/reports/
+
+# Ignore Eclipse & IDE project files
+.settings/
+.project
+.classpath
+
+# Ignore compiled Java classes
+*.class
+
+# Ignore logs & temp files
+*.log
+*.tmp
+
+# Ignore other possible IDE folders
+.idea/
+.vscode/
+
+# Keep source code and config
+!.gitignore
+!/pom.xml
+!/src/
