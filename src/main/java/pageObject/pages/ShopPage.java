@@ -1,13 +1,12 @@
 package pageObject.pages;
 
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$x;
+import helper.ElementUtils;
 
 public class ShopPage extends HomePage {
 
 	private String closePopupBtnLocator = "//button[@aria-label = 'Close']";
 
 	public void clickOnCloseBtn() {
-		$x(closePopupBtnLocator).shouldBe(visible).click();
+		ElementUtils.clickOnElement(closePopupBtnLocator);
 	}
 }
