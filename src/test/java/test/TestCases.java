@@ -47,8 +47,7 @@ public class TestCases extends BaseTest {
 
 	@Test(dataProvider = "checkoutData", dataProviderClass = CheckOutPage.class)
 	public void TC01_verify_users_can_buy_an_item_successfully(String firstName, String lastName, String company,
-			String country, String address, String city, String state, String zip, String phone, String email)
-			throws Exception {
+			String country, String address, String city, String state, String zip, String phone) throws Exception {
 		// register new account
 		homePage.clickOnLoginSignupBtn();
 		myAccountPage.inputRegisEmailAddress();
@@ -92,11 +91,16 @@ public class TestCases extends BaseTest {
 		Assert.assertTrue(productNameAtCheckout.equalsIgnoreCase(productNameBeforeAdd), "not match");
 
 		// fill the billing
-		checkOutPage.fillCheckoutInfo(firstName, lastName, company, country, address, city, state, zip, phone, email);
+		checkOutPage.fillCheckoutInfo(firstName, lastName, company, country, address, city, state, zip, phone);
 		// Click on PLACE ORDER
 		checkOutPage.clickOnPlaceOrder();
 		// Verify Order status page displays
 		DriverUtils.verifyDisplayingPage("order-received");
 		// Verify the Order details with billing and item information - not yet
+
+		String[] inputData = checkOutPage.getInputedData();
+		String[] billingData = checkOutPage.getBillingData();
+
+		assertEquals(billingData, inputData);
 	}
 }
