@@ -57,5 +57,7 @@ public class TC_02_TestVerifyUsersCanBuyMultipleItemsSuccessfully extends TestBa
 
 //  Expected result: All selected items are purchased, and order confirmation is received
     softAssert.assertEquals(orderStatusPage.getAllProductsNames(), expectedProductsNames);
+
+    softAssert.assertAll();
   }
 }
