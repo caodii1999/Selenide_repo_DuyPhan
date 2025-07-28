@@ -4,7 +4,8 @@
 <suite name="SelenideSuite">
   <test name="RegressionTests">
     <classes>
-      <class name="test.TestCases"/>
+      <class name="test.TC_01_TestVerifyUsersCanBuyAnItemSuccessfully"/>
+      <class name="test.TC_02_TestVerifyUsersCanBuyMultipleItemsSuccessfully"/>
     </classes>
   </test>
 </suite>

@@ -1,0 +1,32 @@
+package pages;
+
+import static com.codeborne.selenide.Selenide.$;
+
+import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+import org.openqa.selenium.By;
+
+public class ProductDetailsPage extends BasePage {
+
+  private final String productInfo = "//div[@class = 'product-information-inner']//div[@class = 'fixed-content']";
+  private final String productNameLocator =
+      productInfo + "//h1[@class = 'product_title entry-title']";
+  private final SelenideElement productName = $(By.xpath(productNameLocator));
+  private final String addToCartBtnLocator = "//button[@type = 'submit' and contains(text(), 'Add to cart')]";
+  private final SelenideElement addToCartBtn = $(By.xpath(addToCartBtnLocator));
+  private final String productPriceLocator = "//div[@class='row']//p[@class='price']/ins | //div[@class='row']//p[@class='price']/span/bdi";
+  private final SelenideElement productPrice = $(By.xpath(productPriceLocator));
+
+  public String getProductName() {
+    return productName.scrollIntoView(false).getText().trim();
+  }
+
+  public String getProductPrice() {
+    return productPrice.scrollIntoView(false).getText().trim();
+  }
+
+  @Step("click on AddToCart button")
+  public void ClickOnAddToCartBtn() {
+    addToCartBtn.click();
+  }
+}
