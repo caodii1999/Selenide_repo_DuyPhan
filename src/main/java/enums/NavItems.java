@@ -13,5 +13,4 @@ public enum NavItems {
   ;
 
   private final String itemName;
-
 }

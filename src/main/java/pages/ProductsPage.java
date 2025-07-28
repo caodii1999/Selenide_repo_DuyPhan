@@ -26,8 +26,7 @@ public class ProductsPage extends BasePage {
   private final String randomItemsAddToCartBtnLocator = "//div[@class = 'text-center product-details']//h2[@class = 'product-title']//following-sibling::a[text() = 'Add to cart']";
   private final ElementsCollection randomItemsAddToCartBtn = $$(
       By.xpath(randomItemsAddToCartBtnLocator));
-
-
+  
   private final String successAddToCartPopupLocator = "//div[@class = 'et-notify pos-fixed top right']";
   private final SelenideElement successAddToCartPopup = $(By.xpath(successAddToCartPopupLocator));
 

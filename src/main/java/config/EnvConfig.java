@@ -52,12 +52,10 @@ public class EnvConfig {
     return getProperty("browser");
   }
 
-  // Fixed: Use the correct property key from your config.properties
   public static String getBaseUrl() {
-    return getProperty("urlHost"); // Changed from "base.url" to "urlHost"
+    return getProperty("urlHost");
   }
-
-  // Account-related getters
+  
   public static String getEmail() {
     return getAccountProperty("EMAIL");
   }

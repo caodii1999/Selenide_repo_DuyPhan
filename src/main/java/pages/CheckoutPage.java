@@ -18,28 +18,29 @@ public class CheckoutPage extends BasePage {
   private final String productNameLocator = productReviewLocator + "//td[@class = 'product-name']";
   private final SelenideElement productNameAndQuantity = $(By.xpath(productNameLocator));
   private final String productQuantityLocator = "//strong[@class = 'product-quantity']";
+  private final String billingFirstNameInputLocator = "//input[@id = 'billing_first_name']";
+  private final String billingLastNameInputLocator = "//input[@id = 'billing_last_name']";
+  private final String billingCountryDropdownLocator = "//span[@id = 'select2-billing_country-container']";
+  private final String billingCountryLocator = "//ul[@class = 'select2-results__options']//li";
+  private final String billingAddressInputLocator = "//input[@id = 'billing_address_1']";
+  private final String billingCityInputLocator = "//input[@id = 'billing_city']";
+  private final String billingPhoneNumberInputLocator = "//input[@id = 'billing_phone']";
+  private final String billingEmailInputLocator = "//input[@id = 'billing_email']";
+  private final String placeOrderBtnLocator = "//button[@id= 'place_order']";
   private final SelenideElement productQuantityText = $(By.xpath(productQuantityLocator));
 
-  private final String billingFirstNameInputLocator = "//input[@id = 'billing_first_name']";
   private final SelenideElement billingFirstNameInput = $(By.xpath(billingFirstNameInputLocator));
-  private final String billingLastNameInputLocator = "//input[@id = 'billing_last_name']";
   private final SelenideElement billingLastNameInput = $(By.xpath(billingLastNameInputLocator));
-  private final String billingCountryDropdownLocator = "//span[@id = 'select2-billing_country-container']";
   private final SelenideElement billingCountryDropdown = $(By.xpath(billingCountryDropdownLocator));
-  private final String billingCountryLocator = "//ul[@class = 'select2-results__options']//li";
   private final ElementsCollection billingCountries = $$(By.xpath(billingCountryLocator));
-  private final String billingAddressInputLocator = "//input[@id = 'billing_address_1']";
   private final SelenideElement billingAddressInput = $(By.xpath(billingAddressInputLocator));
-  private final String billingCityInputLocator = "//input[@id = 'billing_city']";
   private final SelenideElement billingCityInput = $(By.xpath(billingCityInputLocator));
-  private final String billingPhoneNumberInputLocator = "//input[@id = 'billing_phone']";
   private final SelenideElement billingPhoneNumberInput = $(
       By.xpath(billingPhoneNumberInputLocator));
-  private final String billingEmailInputLocator = "//input[@id = 'billing_email']";
   private final SelenideElement billingEmailInput = $(By.xpath(billingEmailInputLocator));
 
-  private final String placeOrderBtnLocator = "//button[@id= 'place_order']";
   private final SelenideElement placeOrderBtn = $(By.xpath(placeOrderBtnLocator));
+
 
   public String getProductName() {
     String fullProductName = productNameAndQuantity.getText();

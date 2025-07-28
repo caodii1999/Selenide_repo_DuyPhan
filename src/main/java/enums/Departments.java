@@ -15,5 +15,4 @@ public enum Departments {
   PHONE_TELE("Phones & Telecommunications"), WATCHES("Watches");
 
   private final String type;
-
 }

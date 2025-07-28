@@ -36,8 +36,8 @@ public class EmailConfig {
 
       return json.getString("email_addr");
     } catch (IOException | InterruptedException e) {
-      e.printStackTrace(); // or use a logger
-      return null; // or return a fallback value or throw a runtime exception if preferred
+      e.printStackTrace();
+      return null;
     }
   }
 }

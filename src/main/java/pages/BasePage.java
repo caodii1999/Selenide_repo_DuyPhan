@@ -20,6 +20,7 @@ public class BasePage {
   protected final SelenideElement myAccountBtn = $(By.xpath(myAccountBtnLocator));
   protected final SelenideElement myCartBtn = $(By.xpath(myCartBtnLocator));
 
+  @Step("click on navigate item")
   public void clickOnNavItem(String item) {
     $(By.xpath(String.format(dynamicNavItemsLocator, item))).scrollIntoCenter().click();
   }
@@ -39,5 +40,4 @@ public class BasePage {
   public void clickOnMyCartButton() {
     myCartBtn.scrollIntoView(false).click();
   }
-
 }

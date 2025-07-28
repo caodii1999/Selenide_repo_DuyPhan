@@ -16,19 +16,12 @@ public class OrderStatusPage extends BasePage {
   private final String productNameLocator = orderDetailsLocator + "//table//tbody//tr//td//a";
   private final SelenideElement productName = $(By.xpath(productNameLocator));
   private final ElementsCollection productsNames = $$(By.xpath(productNameLocator));
-
   private final String billingDetailsLocator = "//section[@class = 'woocommerce-customer-details']";
   private final String billingAddressLocator = billingDetailsLocator + "//address";
   private final SelenideElement billingAddress = $(By.xpath(billingAddressLocator));
-  private final String billingPhoneNumberLocator =
-      billingAddressLocator + "//p[@class= 'woocommerce-customer-details--phone']";
-  private final SelenideElement billingPhoneNumber = $(By.xpath(billingPhoneNumberLocator));
-  private final String billingEmailLocator =
-      billingAddressLocator + "//p[@class= 'woocommerce-customer-details--email']";
-  private final SelenideElement billingEmail = $(By.xpath(billingEmailLocator));
-
   private final String orderConfirmationMsgLocator = "//div[@class = 'woocommerce-order']//p[@class = 'woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received']";
   private final SelenideElement orderConfirmationMsg = $(By.xpath(orderConfirmationMsgLocator));
+
 
   public String getProductName() {
     return productName.getText().trim();

@@ -11,6 +11,4 @@ public enum Pages {
       "contact"), CHECKOUT("checkout"), ORDER_STATUS("/order-received/");
 
   private final String pageName;
-
-
 }
