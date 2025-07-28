@@ -4,6 +4,7 @@
 /test-output/
 /downloads/
 /reports/
+.allure-results/
 
 # Ignore Eclipse & IDE project files
 .settings/
