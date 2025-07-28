@@ -41,6 +41,7 @@ public class CheckoutPage extends BasePage {
 
   private final SelenideElement placeOrderBtn = $(By.xpath(placeOrderBtnLocator));
 
+  private final String dynamicPaymentMethodsLocator = "//div[@id = 'order_review']//div//ul//li//label[contains(text(), '%s')]";
 
   public String getProductName() {
     String fullProductName = productNameAndQuantity.getText();
@@ -74,5 +75,13 @@ public class CheckoutPage extends BasePage {
   @Step("click on Place Order button")
   public void clickOnPlaceOrderBtn() {
     placeOrderBtn.click();
+  }
+
+  public void choosePaymentMethod(String payment) {
+    SelenideElement paymentOption = $(
+        By.xpath(String.format(dynamicPaymentMethodsLocator, payment)));
+    if (!paymentOption.isSelected()) {
+      paymentOption.click();
+    }
   }
 }

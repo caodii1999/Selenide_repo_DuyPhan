@@ -75,15 +75,18 @@ public class ProductsPage extends BasePage {
 
   @Step("click on grid btn")
   public void switchViewToGrid() {
-    gridViewBtn.scrollIntoView(false).click();
-    gridViewBtn.shouldHave(cssClass("switcher-active"), Duration.ofSeconds(5));
+    if (!gridViewBtn.has(cssClass("switcher-active"))) {
+      gridViewBtn.scrollIntoView(false).click();
+      gridViewBtn.shouldHave(cssClass("switcher-active"), Duration.ofSeconds(5));
+    }
   }
 
   @Step("click on list btn")
   public void switchViewToList() {
-    listViewBtn.scrollIntoView(false).click();
-    listViewBtn.shouldHave(cssClass("switcher-active"), Duration.ofSeconds(5));
-
+    if (!listViewBtn.has(cssClass("switcher-active"))) {
+      listViewBtn.scrollIntoView(false).click();
+      listViewBtn.shouldHave(cssClass("switcher-active"), Duration.ofSeconds(5));
+    }
   }
 
   @Step("verify grid view")

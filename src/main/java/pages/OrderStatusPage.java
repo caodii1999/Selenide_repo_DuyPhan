@@ -18,6 +18,9 @@ public class OrderStatusPage extends BasePage {
   private final String productNameLocator = orderDetailsLocator + "//table//tbody//tr//td//a";
   private final SelenideElement productName = $(By.xpath(productNameLocator));
   private final ElementsCollection productsNames = $$(By.xpath(productNameLocator));
+  private final String paymentMethodLocator = orderDetailsLocator
+      + "//table//tfoot//tr//th[contains(text(), 'Payment method')]//following-sibling::td";
+  private final SelenideElement paymentMethod = $(By.xpath(paymentMethodLocator));
   private final String billingDetailsLocator = "//section[@class = 'woocommerce-customer-details']";
   private final String billingAddressLocator = billingDetailsLocator + "//address";
   private final SelenideElement billingAddress = $(By.xpath(billingAddressLocator));
@@ -27,6 +30,10 @@ public class OrderStatusPage extends BasePage {
 
   public String getProductName() {
     return productName.getText().trim();
+  }
+
+  public String getPaymentMethod() {
+    return paymentMethod.getText().trim();
   }
 
   public List<String> getAllProductsNames() {

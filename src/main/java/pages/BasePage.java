@@ -1,6 +1,7 @@
 package pages;
 
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.refresh;
 
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
@@ -39,5 +40,6 @@ public class BasePage {
   @Step("Click on Cart")
   public void clickOnMyCartButton() {
     myCartBtn.scrollIntoView(false).click();
+    refresh();
   }
 }

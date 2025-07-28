@@ -6,6 +6,7 @@
     <classes>
       <class name="test.TC_01_TestVerifyUsersCanBuyAnItemSuccessfully"/>
       <class name="test.TC_02_TestVerifyUsersCanBuyMultipleItemsSuccessfully"/>
+      <class name="test.TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods"/>
     </classes>
   </test>
 </suite>
