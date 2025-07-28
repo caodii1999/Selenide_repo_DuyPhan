@@ -32,7 +32,7 @@ public class ShoppingCartPage extends BasePage {
   public List<String> getAllProductsNames() {
     refresh();
     return productsNames.stream()
-        .map(el -> el.scrollIntoView(false).getText())
+        .map(el -> el.scrollIntoView(false).getText().toLowerCase())
         .collect(Collectors.toList());
   }
 

@@ -1,6 +1,5 @@
 package helper;
 
-import static com.codeborne.selenide.Selenide.Wait;
 import static com.codeborne.selenide.Selenide.executeJavaScript;
 
 import com.codeborne.selenide.Selenide;
@@ -33,13 +32,4 @@ public class DriverUtils {
   public static void scrollToTop() {
     executeJavaScript("window.scrollTo(0, 0);");
   }
-
-  public static void waitForPageLoad() {
-    Wait().until(webDriver -> executeJavaScript("return document.readyState").equals("complete"));
-  }
-
-  public static void hideOverlapItem() {
-    executeJavaScript("document.querySelector('a.item-link').style.display = 'none';");
-  }
-
 }

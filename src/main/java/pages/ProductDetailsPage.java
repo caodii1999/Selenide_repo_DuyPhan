@@ -16,8 +16,7 @@ public class ProductDetailsPage extends BasePage {
   private final String productPriceLocator = "//div[@class='row']//p[@class='price']/ins | //div[@class='row']//p[@class='price']/span/bdi";
   private final SelenideElement addToCartBtn = $(By.xpath(addToCartBtnLocator));
   private final SelenideElement productPrice = $(By.xpath(productPriceLocator));
-
-
+  
   public String getProductName() {
     return productName.scrollIntoView(false).getText().trim();
   }

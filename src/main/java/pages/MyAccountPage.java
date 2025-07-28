@@ -38,5 +38,4 @@ public class MyAccountPage extends BasePage {
   public void logout() {
     logoutBtn.scrollIntoView(true).click();
   }
-
 }

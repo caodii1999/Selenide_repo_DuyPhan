@@ -1,10 +1,12 @@
 package pages;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +31,11 @@ public class OrderStatusPage extends BasePage {
 
   public List<String> getAllProductsNames() {
     return productsNames.stream()
-        .map(el -> el.scrollIntoView(false).getText().trim())
+        .map(el -> el.shouldBe(visible, Duration.ofSeconds(3))
+            .scrollIntoView(false)
+            .getText()
+            .toLowerCase()
+            .trim())
         .collect(Collectors.toList());
   }
 
@@ -45,5 +51,4 @@ public class OrderStatusPage extends BasePage {
   public boolean isConfirmationMsgDisplayed() {
     return orderConfirmationMsg.isDisplayed();
   }
-
 }

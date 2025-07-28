@@ -26,7 +26,7 @@ public class ProductsPage extends BasePage {
   private final String randomItemsAddToCartBtnLocator = "//div[@class = 'text-center product-details']//h2[@class = 'product-title']//following-sibling::a[text() = 'Add to cart']";
   private final ElementsCollection randomItemsAddToCartBtn = $$(
       By.xpath(randomItemsAddToCartBtnLocator));
-  
+
   private final String successAddToCartPopupLocator = "//div[@class = 'et-notify pos-fixed top right']";
   private final SelenideElement successAddToCartPopup = $(By.xpath(successAddToCartPopupLocator));
 
@@ -46,30 +46,28 @@ public class ProductsPage extends BasePage {
 
   @Step("add multiple items and get")
   public List<String> addMultipleProductsToCartAndGetNames(int numberOfItemsToAdd) {
-    List<SelenideElement> buttons = new ArrayList<>(
-        randomItemsAddToCartBtn.stream().toList());
+    List<SelenideElement> buttons = new ArrayList<>(randomItemsAddToCartBtn.stream().toList());
     List<SelenideElement> names = new ArrayList<>(randomItems.stream().toList());
-    Collections.shuffle(buttons);
+
+    List<Integer> indices = new ArrayList<>();
+    for (int i = 0; i < Math.min(buttons.size(), names.size()); i++) {
+      indices.add(i);
+    }
+    Collections.shuffle(indices);
 
     List<String> addedProductNames = new ArrayList<>();
-    int count = Math.min(numberOfItemsToAdd, buttons.size());
+    int count = Math.min(numberOfItemsToAdd, indices.size());
 
     for (int i = 0; i < count; i++) {
       if (isSuccessPopupDisappeared()) {
-        String productName = names.get(i).scrollIntoView(true).getText();
+        int index = indices.get(i);
+        String productName = names.get(index).scrollIntoView(true).getText().toLowerCase();
         addedProductNames.add(productName);
-        buttons.get(i).scrollIntoView(false).click();
+        buttons.get(index).scrollIntoView(false).click();
       }
     }
     return addedProductNames;
   }
-
-//  @Step("get all products names")
-//  public List<String> getAllItemsNames() {
-//    return productsNames.stream()
-//        .map(el -> el.scrollIntoView(false).getText())
-//        .collect(Collectors.toList());
-//  }
 
   public boolean isSuccessPopupDisappeared() {
     return !successAddToCartPopup.isDisplayed();
