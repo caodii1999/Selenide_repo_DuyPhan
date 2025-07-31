@@ -36,8 +36,7 @@ public class EmailConfig {
 
       return json.getString("email_addr");
     } catch (IOException | InterruptedException e) {
-      e.printStackTrace();
-      return null;
+      throw new RuntimeException("Failed to fetch email address", e);
     }
   }
 }
