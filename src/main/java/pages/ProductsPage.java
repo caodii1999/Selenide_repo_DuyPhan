@@ -8,13 +8,16 @@ import static com.codeborne.selenide.Selenide.$$;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import enums.Sort;
 import io.qameta.allure.Step;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import model.Product;
 import org.openqa.selenium.By;
 
 @Slf4j
@@ -36,6 +39,15 @@ public class ProductsPage extends BasePage {
   private final SelenideElement gridViewBtn = $(By.xpath(gridViewBtnLocator));
   private final SelenideElement listViewBtn = $(By.xpath(listViewBtnLocator));
 
+  private final String sortDropDownLocator = "//select[@class = 'orderby']";
+  private final SelenideElement sortDropDown = $(By.xpath(sortDropDownLocator));
+
+  private final String productPricesLocator = "//div[@class='text-center product-details']//span[@class='woocommerce-Price-amount amount']/bdi[not(ancestor::del)]";
+  private final ElementsCollection productPrices = $$(By.xpath(productPricesLocator));
+
+  private final String loadSpinnerLocator = "//div[@class = 'et-loader product-ajax']";
+  private final SelenideElement loadSpinner = $(By.xpath(loadSpinnerLocator));
+
   @Step("select random Item")
   public void selectRandomItem() {
     int size = randomItems.size();
@@ -44,8 +56,8 @@ public class ProductsPage extends BasePage {
     randomElement.shouldBe(enabled, Duration.ofSeconds(5)).scrollIntoView(false).click();
   }
 
-  @Step("add multiple items and get")
-  public List<String> addMultipleProductsToCartAndGetNames(int numberOfItemsToAdd) {
+  @Step("add multiple items and get name")
+  public List<Product> addMultipleProductsToCartAndGetNames(int numberOfItemsToAdd) {
     List<SelenideElement> buttons = new ArrayList<>(randomItemsAddToCartBtn.stream().toList());
     List<SelenideElement> names = new ArrayList<>(randomItems.stream().toList());
 
@@ -55,14 +67,14 @@ public class ProductsPage extends BasePage {
     }
     Collections.shuffle(indices);
 
-    List<String> addedProductNames = new ArrayList<>();
+    List<Product> addedProductNames = new ArrayList<>();
     int count = Math.min(numberOfItemsToAdd, indices.size());
 
     for (int i = 0; i < count; i++) {
       if (isSuccessPopupDisappeared()) {
         int index = indices.get(i);
         String productName = names.get(index).scrollIntoView(true).getText().toLowerCase();
-        addedProductNames.add(productName);
+        addedProductNames.add(new Product(productName));
         buttons.get(index).scrollIntoView(false).click();
       }
     }
@@ -99,5 +111,48 @@ public class ProductsPage extends BasePage {
   public boolean isListView() {
     return listViewBtn.shouldBe(visible, Duration.ofSeconds(5)).getAttribute("class")
         .contains(" switcher-active");
+  }
+
+  public void selectSortOption(String option) {
+    sortDropDown.selectOptionContainingText(option);
+  }
+
+  @Step("sort low to high")
+  public void selectLowToHighSortOption() {
+    selectSortOption(Sort.LOW_TO_HIGH.getSortBy());
+  }
+
+  @Step("sort high to low")
+  public void selectHighToLowSortOption() {
+    selectSortOption(Sort.HIGH_TO_LOW.getSortBy());
+  }
+
+  public Boolean isLoadingSpinnerAppeared() {
+    return loadSpinner.getAttribute("class").contains(" loading");
+  }
+
+  public List<Double> getProductPrices() {
+    if (isLoadingSpinnerAppeared()) {
+      throw new IllegalStateException("Loading spinner did not disappear within timeout.");
+    }
+    return productPrices.stream()
+        .map(SelenideElement::getText)
+        .map(text -> text.replaceAll("[^\\d.]", ""))
+        .map(Double::parseDouble)
+        .collect(Collectors.toList());
+  }
+
+  @Step("is items sort low to high by price")
+  public boolean isSortedLowToHigh(List<Double> prices) {
+    List<Double> sorted = new ArrayList<>(prices);
+    Collections.sort(sorted);
+    return prices.equals(sorted);
+  }
+
+  @Step("is items sort high to low by price")
+  public boolean isSortedHighToLow(List<Double> prices) {
+    List<Double> sorted = new ArrayList<>(prices);
+    sorted.sort(Collections.reverseOrder());
+    return prices.equals(sorted);
   }
 }

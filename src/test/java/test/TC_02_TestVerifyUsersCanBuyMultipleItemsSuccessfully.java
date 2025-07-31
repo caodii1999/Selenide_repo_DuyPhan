@@ -6,6 +6,7 @@ import enums.Pages;
 import helper.DriverUtils;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import model.Product;
 import model.User;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -28,9 +29,9 @@ public class TC_02_TestVerifyUsersCanBuyMultipleItemsSuccessfully extends TestBa
   CheckoutPage checkoutPage = new CheckoutPage();
   OrderStatusPage orderStatusPage = new OrderStatusPage();
 
-  List<String> expectedProductsNames;
-  List<String> actualProductsNames;
-  List<String> purchasedProductsNames;
+  List<Product> expectedProductsNames;
+  List<Product> actualProductsNames;
+  List<Product> purchasedProductsNames;
 
   public void VerifyUsersCanBuyMultipleItemsSuccessfully(User user) {
 

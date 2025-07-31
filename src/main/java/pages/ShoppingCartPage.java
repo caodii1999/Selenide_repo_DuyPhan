@@ -9,6 +9,7 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import java.util.List;
 import java.util.stream.Collectors;
+import model.Product;
 import org.openqa.selenium.By;
 
 public class ShoppingCartPage extends BasePage {
@@ -23,16 +24,20 @@ public class ShoppingCartPage extends BasePage {
   private final SelenideElement proceedToCheckoutBtn = $(By.xpath(proceedToCheckoutBtnLocator));
 
 
-  public String getProductName() {
+  public Product getProductName() {
     refresh();
-    return productTitle.getText().trim();
+    String productName = productTitle.getText().toLowerCase().trim();
+    return new Product(productName);
   }
 
   @Step("get all products names in cart")
-  public List<String> getAllProductsNames() {
+  public List<Product> getAllProductsNames() {
     refresh();
     return productsNames.stream()
-        .map(el -> el.scrollIntoView(false).getText().toLowerCase())
+        .map(el -> {
+          String name = el.scrollIntoView(false).getText().toLowerCase();
+          return new Product(name);
+        })
         .collect(Collectors.toList());
   }
 

@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import model.Product;
 import org.openqa.selenium.By;
 
 public class OrderStatusPage extends BasePage {
@@ -27,7 +28,6 @@ public class OrderStatusPage extends BasePage {
   private final String orderConfirmationMsgLocator = "//div[@class = 'woocommerce-order']//p[@class = 'woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received']";
   private final SelenideElement orderConfirmationMsg = $(By.xpath(orderConfirmationMsgLocator));
 
-
   public String getProductName() {
     return productName.getText().trim();
   }
@@ -36,13 +36,16 @@ public class OrderStatusPage extends BasePage {
     return paymentMethod.getText().trim();
   }
 
-  public List<String> getAllProductsNames() {
+  public List<Product> getAllProductsNames() {
     return productsNames.stream()
-        .map(el -> el.shouldBe(visible, Duration.ofSeconds(3))
-            .scrollIntoView(false)
-            .getText()
-            .toLowerCase()
-            .trim())
+        .map(el -> {
+          String name = el.shouldBe(visible, Duration.ofSeconds(3))
+              .scrollIntoView(false)
+              .getText()
+              .toLowerCase()
+              .trim();
+          return new Product(name);
+        })
         .collect(Collectors.toList());
   }
 

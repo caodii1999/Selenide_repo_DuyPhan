@@ -8,6 +8,7 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import lombok.extern.slf4j.Slf4j;
+import model.Product;
 import model.User;
 import org.openqa.selenium.By;
 
@@ -43,10 +44,11 @@ public class CheckoutPage extends BasePage {
 
   private final String dynamicPaymentMethodsLocator = "//div[@id = 'order_review']//div//ul//li//label[contains(text(), '%s')]";
 
-  public String getProductName() {
+  public Product getProductName() {
     String fullProductName = productNameAndQuantity.getText();
     String quantityText = productQuantityText.getText();
-    return fullProductName.replace(quantityText, "").trim();
+    String productName = fullProductName.replace(quantityText, "").toLowerCase().trim();
+    return new Product(productName);
   }
 
   @Step("filling bills")

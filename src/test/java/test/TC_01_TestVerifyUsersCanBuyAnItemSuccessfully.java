@@ -7,6 +7,7 @@ import helper.DriverUtils;
 import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import model.Product;
 import model.User;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -32,7 +33,8 @@ public class TC_01_TestVerifyUsersCanBuyAnItemSuccessfully extends TestBase {
   OrderStatusPage orderStatusPage = new OrderStatusPage();
 
   public void verifyUsersCanBuyAnItemSuccessfully(User user) {
-    String detailsProductName;
+    Product detailsProductName;
+
     String fullName = user.getFullName();
     String address = user.getAddress();
     String city = user.getCity();
@@ -75,7 +77,8 @@ public class TC_01_TestVerifyUsersCanBuyAnItemSuccessfully extends TestBase {
     productDetailsPage.clickOnMyCartButton();
 
 //  11. Verify item details in mini content
-    softAssert.assertTrue(shoppingCartPage.getProductName().equalsIgnoreCase(detailsProductName));
+    softAssert.assertTrue(shoppingCartPage.getProductName().equals(detailsProductName),
+        "Verify item details in mini content");
 
 //  12. Click on Checkout
     shoppingCartPage.clickCheckoutBtn();
@@ -85,7 +88,8 @@ public class TC_01_TestVerifyUsersCanBuyAnItemSuccessfully extends TestBase {
         "checkout page is displayed");
 
 //  14. Verify item details in order
-    softAssert.assertTrue(checkoutPage.getProductName().equalsIgnoreCase(detailsProductName));
+    softAssert.assertTrue(checkoutPage.getProductName().equals(detailsProductName),
+        "Verify item details in order");
 
 //  15. Fill the billing details with default payment method
     checkoutPage.fillBillingInfo(user);
@@ -106,5 +110,4 @@ public class TC_01_TestVerifyUsersCanBuyAnItemSuccessfully extends TestBase {
 
     softAssert.assertAll();
   }
-
 }
