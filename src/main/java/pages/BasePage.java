@@ -14,7 +14,7 @@ public class BasePage {
   protected final String dynamicNavItemsLocator = "//ul[@id = 'menu-main-menu-1']//li[a[text() = '%s']]";
   protected final String allDepartmentLocator = "//div[@class = 'secondary-menu-wrapper']";
   protected final String dynamicDepartmentLocator = "//div[@class = 'secondary-menu-wrapper']//div[ul[@id = 'menu-all-departments-1']]//li[a[contains(text(), '%s')]]";
-  protected final String myAccountBtnLocator = "//span[contains(text(), 'Log in / Sign up')]";
+  protected final String myAccountBtnLocator = "//span[@class = 'et-element-label inline-block mob-hide']";
   protected final String myCartBtnLocator = "//a[@href = 'https://demo.testarchitect.com/cart/']";
 
   protected final SelenideElement allDepartment = $(By.xpath(allDepartmentLocator));

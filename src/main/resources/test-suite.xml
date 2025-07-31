@@ -8,6 +8,8 @@
       <class name="test.TC_02_TestVerifyUsersCanBuyMultipleItemsSuccessfully"/>
       <class name="test.TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods"/>
       <class name="test.TC_04_TestVerifyUsersCanSortItemsByPrice"/>
+      <class name="test.TC_05_TestVerifyOrdersAppearInOrderHistory"/>
+      <class name="test.TC_06_TestVerifyUsersTryToBuyAnItemWithoutLoggingIn"/>
     </classes>
   </test>
 </suite>
