@@ -14,6 +14,7 @@ import pages.ProductsPage;
 import pages.ShoppingCartPage;
 
 @Slf4j
+@Test(dataProvider = "missingUserData", dataProviderClass = UserDataProvider.class)
 public class TC_07_TestErrorHandling extends TestBase {
 
   SoftAssert softAssert = new SoftAssert();
@@ -24,9 +25,8 @@ public class TC_07_TestErrorHandling extends TestBase {
   ShoppingCartPage shoppingCartPage = new ShoppingCartPage();
   CheckoutPage checkoutPage = new CheckoutPage();
 
-  @Test(dataProvider = "missingUserData", dataProviderClass = UserDataProvider.class)
-  public void TesErrorHandling(User user) {
-    User validUser = new User("tsnqknmq@sharklasers.com", "Test@123");
+  public void TestErrorHandling(User missingInfoUser) {
+    User validUser = User.builder().build();
 
     homePage.clickOnMyAccountButton();
     myAccountPage.login(validUser);
@@ -36,7 +36,7 @@ public class TC_07_TestErrorHandling extends TestBase {
     productDetailsPage.clickOnMyCartButton();
     shoppingCartPage.clickCheckoutBtn();
 
-    checkoutPage.fillBillingInfo(user);
+    checkoutPage.fillBillingInfo(missingInfoUser);
     checkoutPage.clickOnPlaceOrderBtn();
     softAssert.assertTrue(checkoutPage.isErrorMsgMatchMissingField());
 
