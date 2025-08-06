@@ -5,8 +5,8 @@ import static com.codeborne.selenide.Selenide.open;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
-import config.EmailConfig;
 import config.EnvConfig;
+import factory.UserFactory;
 import helper.DriverUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.AfterMethod;
@@ -16,11 +16,12 @@ import org.testng.annotations.BeforeSuite;
 @Slf4j
 public class TestBase {
 
-  private EnvConfig config;
+  protected EnvConfig config;
 
   @BeforeSuite
   public void globalSetup() {
     config = new EnvConfig();
+    new UserFactory(config).createDefaultUser();
 
     Configuration.browser = config.getBrowser();
     Configuration.baseUrl = config.getBaseUrl();
@@ -29,22 +30,6 @@ public class TestBase {
 
     log.info("Test suite initialized with browser: {} and base URL: {}",
         config.getBrowser(), config.getBaseUrl());
-  }
-
-  public String initEmail() {
-    String email = config.getEmail();
-    if (email.isEmpty()) {
-      try {
-        email = EmailConfig.getEmailAddress();
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
-    }
-    return email;
-  }
-
-  private String initPassword() {
-    return config.getPassword();
   }
 
   @BeforeMethod

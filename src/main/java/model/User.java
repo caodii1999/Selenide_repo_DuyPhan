@@ -20,10 +20,8 @@ public class User {
   private String address;
   private int zipCode;
   private String city;
-  @Builder.Default
-  private String email = initEmail();
-  @Builder.Default
-  private String password = initPassword();
+  private String email;
+  private String password;
   private String phoneNumber;
 
 
