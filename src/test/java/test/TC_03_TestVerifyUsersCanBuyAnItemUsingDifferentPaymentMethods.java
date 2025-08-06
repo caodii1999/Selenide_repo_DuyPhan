@@ -1,5 +1,7 @@
 package test;
 
+import static com.codeborne.selenide.Selenide.refresh;
+
 import dataprovider.UserDataProvider;
 import enums.NavItems;
 import enums.Pages;
@@ -33,36 +35,27 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
   public void TestBankTransferPaymentMethod(User user) {
     homePage.clickOnMyAccountButton();
 
-//  2. Login with valid credentials
     myAccountPage.login(user);
 
-//  3. Go to Shop page
     myAccountPage.clickOnNavItem(NavItems.SHOP.getItemName());
 
-//  4. Select an item and add to cart
     productsPage.selectRandomItem();
     productDetailsPage.ClickOnAddToCartBtn();
     productDetailsPage.clickOnMyCartButton();
 
-//  5. Go to Checkout page
     shoppingCartPage.clickCheckoutBtn();
 
-//  6. Choose a different payment method (Direct bank transfer, Cash on delivery)
-    checkoutPage.choosePaymentMethod(PaymentMethod.DIRECT_BANK_TRANFER.getMethod());
+    checkoutPage.choosePaymentMethod(PaymentMethod.DIRECT_BANK_TRANSFER.getMethod());
 
-//  7. Complete the payment process
     checkoutPage.fillBillingInfo(user);
     checkoutPage.clickOnPlaceOrderBtn();
 
-//  8. Verify order confirmation message
     softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
         "order status page is displayed");
     softAssert.assertTrue(orderStatusPage.isConfirmationMsgDisplayed(),
         "confirmation message is displayed");
 
-//  Expected result: Payment is processed successfully for each available method
-
-    softAssert.assertEquals(PaymentMethod.DIRECT_BANK_TRANFER.getMethod(),
+    softAssert.assertEquals(PaymentMethod.DIRECT_BANK_TRANSFER.getMethod(),
         orderStatusPage.getPaymentMethod());
 
     softAssert.assertAll();
@@ -71,34 +64,25 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
   public void TestCHECKPaymentMethod(User user) {
     homePage.clickOnMyAccountButton();
 
-//  2. Login with valid credentials
     myAccountPage.login(user);
 
-//  3. Go to Shop page
     myAccountPage.clickOnNavItem(NavItems.SHOP.getItemName());
 
-//  4. Select an item and add to cart
     productsPage.selectRandomItem();
     productDetailsPage.ClickOnAddToCartBtn();
     productDetailsPage.clickOnMyCartButton();
 
-//  5. Go to Checkout page
     shoppingCartPage.clickCheckoutBtn();
 
-//  6. Choose a different payment method (Direct bank transfer, Cash on delivery)
     checkoutPage.choosePaymentMethod(PaymentMethod.CHECK_PAYMENTS.getMethod());
 
-//  7. Complete the payment process
     checkoutPage.fillBillingInfo(user);
     checkoutPage.clickOnPlaceOrderBtn();
 
-//  8. Verify order confirmation message
     softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
         "order status page is displayed");
     softAssert.assertTrue(orderStatusPage.isConfirmationMsgDisplayed(),
         "confirmation message is displayed");
-
-//  Expected result: Payment is processed successfully for each available method
 
     softAssert.assertEquals(PaymentMethod.CHECK_PAYMENTS.getMethod(),
         orderStatusPage.getPaymentMethod());
@@ -109,34 +93,30 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
   public void TestCODPaymentMethod(User user) {
     homePage.clickOnMyAccountButton();
 
-//  2. Login with valid credentials
     myAccountPage.login(user);
 
-//  3. Go to Shop page
     myAccountPage.clickOnNavItem(NavItems.SHOP.getItemName());
 
-//  4. Select an item and add to cart
     productsPage.selectRandomItem();
+
     productDetailsPage.ClickOnAddToCartBtn();
+
     productDetailsPage.clickOnMyCartButton();
 
-//  5. Go to Checkout page
+    refresh(); //need to refresh due to page does not update product to cart at first
+
     shoppingCartPage.clickCheckoutBtn();
 
-//  6. Choose a different payment method (Direct bank transfer, Cash on delivery)
     checkoutPage.choosePaymentMethod(PaymentMethod.COD.getMethod());
 
-//  7. Complete the payment process
     checkoutPage.fillBillingInfo(user);
+    
     checkoutPage.clickOnPlaceOrderBtn();
 
-//  8. Verify order confirmation message
     softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
         "order status page is displayed");
     softAssert.assertTrue(orderStatusPage.isConfirmationMsgDisplayed(),
         "confirmation message is displayed");
-
-//  Expected result: Payment is processed successfully for each available method
 
     softAssert.assertEquals(PaymentMethod.COD.getMethod(), orderStatusPage.getPaymentMethod());
 

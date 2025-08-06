@@ -1,5 +1,7 @@
 package test;
 
+import static com.codeborne.selenide.Selenide.refresh;
+
 import dataprovider.UserDataProvider;
 import enums.NavItems;
 import enums.Pages;
@@ -37,37 +39,30 @@ public class TC_02_TestVerifyUsersCanBuyMultipleItemsSuccessfully extends TestBa
 
     homePage.clickOnMyAccountButton();
 
-//  2. Login with valid credentials
     myAccountPage.login(user);
 
-//  3. Go to Shop page
     myAccountPage.clickOnNavItem(NavItems.SHOP.getItemName());
 
-//  4. Select multiple items and add to cart
     expectedProductsNames = productsPage.addMultipleProductsToCartAndGetNames(3);
 
-//  5. Go to the cart and verify all selected items
     productsPage.clickOnMyCartButton();
+
+    refresh(); //need to refresh due to page does not update product to cart at first
 
     actualProductsNames = shoppingCartPage.getAllProductsNames();
 
     softAssert.assertEquals(actualProductsNames, expectedProductsNames, "step 5");
 
-//  6. Proceed to checkout and confirm order
     shoppingCartPage.clickCheckoutBtn();
 
     checkoutPage.fillBillingInfo(user);
 
     checkoutPage.clickOnPlaceOrderBtn();
 
-//  7. Verify order confirmation message
-
     softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
         "order status page is displayed");
 
     softAssert.assertTrue(orderStatusPage.isConfirmationMsgDisplayed());
-
-//  Expected result: All selected items are purchased, and order confirmation is received
 
     purchasedProductsNames = orderStatusPage.getAllProductsNames();
 

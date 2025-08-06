@@ -1,89 +1,49 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org</groupId>
+	<artifactId>org</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Selenide</name>
 
-  <artifactId>org</artifactId>
-  <build>
-    <plugins>
-      <!-- Compiler plugin to set Java version -->
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <release>21</release>
-        </configuration>
-        <groupId>org.apache.maven.plugins</groupId>
-        <version>3.11.0</version>
-      </plugin>
-    </plugins>
-  </build>
-  <dependencies>
-    <!-- Selenide -->
-    <dependency>
-      <artifactId>selenide</artifactId>
-      <groupId>com.codeborne</groupId>
-      <version>7.9.4</version>
-    </dependency>
+	<dependencies>
+		<!--
+		https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>4.34.0</version>
+		</dependency>
 
-    <!-- SLF4J for logging -->
-    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
-    <dependency>
-      <artifactId>slf4j-simple</artifactId>
-      <groupId>org.slf4j</groupId>
-      <version>2.0.17</version>
-    </dependency>
+		<!-- https://mvnrepository.com/artifact/com.codeborne/selenide -->
+		<dependency>
+			<groupId>com.codeborne</groupId>
+			<artifactId>selenide</artifactId>
+			<version>7.9.2</version>
+		</dependency>
 
-    <dependency>
-      <artifactId>logback-classic</artifactId>
-      <groupId>ch.qos.logback</groupId>
-      <version>1.4.14</version>
-    </dependency>
+		<!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-selenide -->
+		<dependency>
+			<groupId>io.qameta.allure</groupId>
+			<artifactId>allure-selenide</artifactId>
+			<version>2.29.1</version>
+		</dependency>
 
-    <!-- TestNG -->
-    <dependency>
-      <artifactId>testng</artifactId>
-      <groupId>org.testng</groupId>
-      <scope>test</scope>
-      <version>7.11.0</version>
-    </dependency>
+		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>7.11.0</version>
+			<scope>test</scope>
+		</dependency>
 
-    <!-- JSON -->
-    <dependency>
-      <artifactId>json</artifactId>
-      <groupId>org.json</groupId>
-      <version>20240303</version>
-    </dependency>
-
-    <!-- WebDriverManager -->
-    <dependency>
-      <artifactId>webdrivermanager</artifactId>
-      <groupId>io.github.bonigarcia</groupId>
-      <version>6.2.0</version>
-    </dependency>
-
-    <!-- Lombok -->
-    <dependency>
-      <artifactId>lombok</artifactId>
-      <groupId>org.projectlombok</groupId>
-      <scope>provided</scope>
-      <version>1.18.38</version>
-    </dependency>
-
-    <!-- Allure Reporting -->
-    <dependency>
-      <artifactId>allure-testng</artifactId>
-      <groupId>io.qameta.allure</groupId>
-      <version>2.29.1</version>
-    </dependency>
-  </dependencies>
-  <groupId>org</groupId>
-  <modelVersion>4.0.0</modelVersion>
-
-  <name>Selenide</name>
-
-  <properties>
-    <maven.compiler.release>21</maven.compiler.release>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-
-  <version>0.0.1-SNAPSHOT</version>
+		<!--
+		https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.19.1</version>
+		</dependency>
+	</dependencies>
 </project>

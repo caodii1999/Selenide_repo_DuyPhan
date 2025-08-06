@@ -5,6 +5,7 @@ import static com.codeborne.selenide.Selenide.open;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
+import config.EmailConfig;
 import config.EnvConfig;
 import helper.DriverUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -15,21 +16,41 @@ import org.testng.annotations.BeforeSuite;
 @Slf4j
 public class TestBase {
 
+  private EnvConfig config;
+
   @BeforeSuite
   public void globalSetup() {
-    Configuration.browser = EnvConfig.getBrowser();
-    Configuration.baseUrl = EnvConfig.getBaseUrl();
+    config = new EnvConfig();
+
+    Configuration.browser = config.getBrowser();
+    Configuration.baseUrl = config.getBaseUrl();
     Configuration.timeout = 10000; // 10 seconds
     Configuration.pageLoadTimeout = 30000; // 30 seconds
 
     log.info("Test suite initialized with browser: {} and base URL: {}",
-        EnvConfig.getBrowser(), EnvConfig.getBaseUrl());
+        config.getBrowser(), config.getBaseUrl());
+  }
+
+  public String initEmail() {
+    String email = config.getEmail();
+    if (email.isEmpty()) {
+      try {
+        email = EmailConfig.getEmailAddress();
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return email;
+  }
+
+  private String initPassword() {
+    return config.getPassword();
   }
 
   @BeforeMethod
   public void setup() {
     try {
-      open(EnvConfig.getBaseUrl());
+      open(config.getBaseUrl());
 
       WebDriverRunner.getWebDriver().manage().window().maximize();
 

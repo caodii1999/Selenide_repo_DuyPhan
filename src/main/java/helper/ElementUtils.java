@@ -1,7 +1,13 @@
 package helper;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
+
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
 
 public class ElementUtils {
 
@@ -27,5 +33,16 @@ public class ElementUtils {
 
   public static void disableSalePopup() {
     $x("//span[@class = 'close pos-absolute right top']").click();
+  }
+
+  public static void setValueToInputFields(String xpath, String inputField, String value) {
+    SelenideElement el = $(By.xpath(String.format(xpath, inputField)));
+    el.setValue(value);
+  }
+
+  public static void selectValueInDropDown(SelenideElement el, ElementsCollection col,
+      String name) {
+    el.click();
+    col.findBy(text(name)).click();
   }
 }

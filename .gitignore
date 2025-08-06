@@ -4,7 +4,6 @@
 /test-output/
 /downloads/
 /reports/
-allure-results/
 
 # Ignore Eclipse & IDE project files
 .settings/
@@ -24,5 +23,9 @@ allure-results/
 
 # Keep source code and config
 !.gitignore
+<<<<<<< Updated upstream
+!/pom.xml
+=======
 !/pom.xml
 !/src/
+>>>>>>> Stashed changes

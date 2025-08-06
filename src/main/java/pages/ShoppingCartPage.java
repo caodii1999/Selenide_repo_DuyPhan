@@ -2,7 +2,6 @@ package pages;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.refresh;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
@@ -25,14 +24,12 @@ public class ShoppingCartPage extends BasePage {
 
 
   public Product getProductName() {
-    refresh();
     String productName = productTitle.getText().toLowerCase().trim();
     return new Product(productName);
   }
 
   @Step("get all products names in cart")
   public List<Product> getAllProductsNames() {
-    refresh();
     return productsNames.stream()
         .map(el -> {
           String name = el.scrollIntoView(false).getText().toLowerCase();

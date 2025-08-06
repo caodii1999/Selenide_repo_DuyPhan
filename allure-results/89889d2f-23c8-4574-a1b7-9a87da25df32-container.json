@@ -1,0 +1,1 @@
+{"uuid":"89889d2f-23c8-4574-a1b7-9a87da25df32","name":"SelenideSuite","children":["8ab4d6e1-b3ed-4df7-b9a2-ff9cc5f3012c"],"befores":[{"name":"globalSetup","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1753689430064,"stop":1753689430077}],"afters":[],"start":1753689430052,"stop":1753689498598}

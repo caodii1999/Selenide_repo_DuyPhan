@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum PaymentMethod {
-  DIRECT_BANK_TRANFER("Direct bank transfer"),
+  DIRECT_BANK_TRANSFER("Direct bank transfer"),
   CHECK_PAYMENTS("Check payments"),
   COD("Cash on delivery");
 

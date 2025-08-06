@@ -25,19 +25,14 @@ public class TC_04_TestVerifyUsersCanSortItemsByPrice extends TestBase {
   public void TestSortItemsByPriceLowToHigh(User user) {
     homePage.clickOnMyAccountButton();
 
-//  2. Login with valid credentials
     myAccountPage.login(user);
 
-//  3. Go to Shop page
     myAccountPage.clickOnNavItem(NavItems.SHOP.getItemName());
 
-//  4.  Switch view to list
     productsPage.switchViewToList();
 
-// 5. Sort items by price (low to high)
     productsPage.selectLowToHighSortOption();
 
-// 6. Verify the order of items
     sortedPrice = productsPage.getProductPrices();
 
     softAssert.assertTrue(productsPage.isSortedLowToHigh(sortedPrice), "sorted");
@@ -48,19 +43,14 @@ public class TC_04_TestVerifyUsersCanSortItemsByPrice extends TestBase {
   public void TestSortItemsByPriceHighToLow(User user) {
     homePage.clickOnMyAccountButton();
 
-//  2. Login with valid credentials
     myAccountPage.login(user);
 
-//  3. Go to Shop page
     myAccountPage.clickOnNavItem(NavItems.SHOP.getItemName());
 
-//  4.  Switch view to list
     productsPage.switchViewToList();
 
-// 5. Sort items by price (high to low)
     productsPage.selectHighToLowSortOption();
 
-// 6. Verify the order of items
     sortedPrice = productsPage.getProductPrices();
 
     softAssert.assertTrue(productsPage.isSortedHighToLow(sortedPrice), "sorted");

@@ -1,7 +1,5 @@
 package model;
 
-import config.EmailConfig;
-import config.EnvConfig;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,22 +30,6 @@ public class User {
   public User(String email, String password) {
     this.email = email;
     this.password = password;
-  }
-
-  private static String initEmail() {
-    String email = EnvConfig.getEmail();
-    if (email.isEmpty()) {
-      try {
-        email = EmailConfig.getEmailAddress();
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
-    }
-    return email;
-  }
-
-  private static String initPassword() {
-    return EnvConfig.getPassword();
   }
 
   public String getFullName() {
