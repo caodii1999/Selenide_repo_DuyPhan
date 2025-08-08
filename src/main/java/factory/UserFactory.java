@@ -6,13 +6,7 @@ import model.User;
 
 public class UserFactory {
 
-  private final EnvConfig config;
-
-  public UserFactory(EnvConfig config) {
-    this.config = config;
-  }
-
-  public User createDefaultUser() {
+  public static User createDefaultUser(EnvConfig config) {
     String email = config.getEmail();
 
     if (email.isEmpty()) {
@@ -25,6 +19,9 @@ public class UserFactory {
 
     String password = config.getPassword();
 
-    return new User(email, password);
+    return User.builder()
+        .email(email)
+        .password(password)
+        .build();
   }
 }

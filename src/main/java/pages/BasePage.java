@@ -3,6 +3,7 @@ package pages;
 import static com.codeborne.selenide.Selenide.$;
 
 import com.codeborne.selenide.SelenideElement;
+import enums.NavItems;
 import io.qameta.allure.Step;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
@@ -20,9 +21,13 @@ public class BasePage {
   protected final SelenideElement myAccountBtn = $(By.xpath(myAccountBtnLocator));
   protected final SelenideElement myCartBtn = $(By.xpath(myCartBtnLocator));
 
-  @Step("click on navigate item")
   public void clickOnNavItem(String item) {
     $(By.xpath(String.format(dynamicNavItemsLocator, item))).scrollIntoCenter().click();
+  }
+
+  @Step("Navigate to Shop page")
+  public void navigateToShopPage() {
+    clickOnNavItem(NavItems.SHOP.getItemName());
   }
 
   @Step("Select Department")

@@ -35,7 +35,7 @@ public class TC_01_TestVerifyUsersCanBuyAnItemSuccessfully extends TestBase {
   OrderStatusPage orderStatusPage = new OrderStatusPage();
 
   public void verifyUsersCanBuyAnItemSuccessfully(User user) {
-    Product detailsProductName;
+    Product detailsProduct;
 
     String fullName = user.getFullName();
     String address = user.getAddress();
@@ -49,7 +49,7 @@ public class TC_01_TestVerifyUsersCanBuyAnItemSuccessfully extends TestBase {
 
     homePage.clickOnMyAccountButton();
 
-    myAccountPage.login(user);
+    myAccountPage.login(defaultUser);
 
     myAccountPage.selectDepartment(Departments.ELECTRONIC_COMPONENT.getType());
 
@@ -63,7 +63,7 @@ public class TC_01_TestVerifyUsersCanBuyAnItemSuccessfully extends TestBase {
 
     productsPage.selectRandomItem();
 
-    detailsProductName = productDetailsPage.getProductName();
+    detailsProduct = productDetailsPage.getDetailProductInfo();
 
     productDetailsPage.ClickOnAddToCartBtn();
 
@@ -71,7 +71,7 @@ public class TC_01_TestVerifyUsersCanBuyAnItemSuccessfully extends TestBase {
 
     refresh(); //need to refresh due to page does not update product to cart at first
 
-    softAssert.assertTrue(shoppingCartPage.getProductName().equals(detailsProductName),
+    softAssert.assertEquals(shoppingCartPage.getSingleProductInfo(), detailsProduct,
         "Verify item details in mini content");
 
     shoppingCartPage.clickCheckoutBtn();
@@ -79,7 +79,7 @@ public class TC_01_TestVerifyUsersCanBuyAnItemSuccessfully extends TestBase {
     softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.CHECKOUT.getPageName()),
         "checkout page is displayed");
 
-    softAssert.assertTrue(checkoutPage.getProductName().equals(detailsProductName),
+    softAssert.assertEquals(checkoutPage.getProductInfo(), detailsProduct,
         "Verify item details in order");
 
     checkoutPage.fillBillingInfo(user);

@@ -19,12 +19,14 @@ public class CheckoutPage extends BasePage {
   private final String productReviewLocator = "//div[@id= 'order_review']//table//tbody//tr";
   private final String productNameLocator = productReviewLocator + "//td[@class = 'product-name']";
   private final SelenideElement productNameAndQuantity = $(By.xpath(productNameLocator));
+  private final String productPriceLocator = "//td[@class = 'product-total']//span//bdi";
+  private final SelenideElement productPrice = $(By.xpath(productPriceLocator));
   private final String productQuantityLocator = "//strong[@class = 'product-quantity']";
   private final String dynamicBillingInputLocator = "//input[@id = '%s']";
   private final String billingCountryDropdownLocator = "//span[@id = 'select2-billing_country-container']";
   private final String billingCountryLocator = "//ul[@class = 'select2-results__options']//li";
   private final String placeOrderBtnLocator = "//button[@id= 'place_order']";
-  private final SelenideElement productQuantityText = $(By.xpath(productQuantityLocator));
+  private final SelenideElement productQuantity = $(By.xpath(productQuantityLocator));
 
   private final SelenideElement billingCountryDropdown = $(By.xpath(billingCountryDropdownLocator));
   private final ElementsCollection billingCountries = $$(By.xpath(billingCountryLocator));
@@ -34,11 +36,14 @@ public class CheckoutPage extends BasePage {
 
   private final String dynamicPaymentMethodsLocator = "//div[@id = 'order_review']//div//ul//li//label[contains(text(), '%s')]";
 
-  public Product getProductName() {
+  public Product getProductInfo() {
     String fullProductName = productNameAndQuantity.getText();
-    String quantityText = productQuantityText.getText();
-    String productName = fullProductName.replace(quantityText, "").toLowerCase().trim();
-    return new Product(productName);
+    String quantity = productQuantity.getText().replace("×", "").trim();
+    String name = fullProductName.replace(quantity, "").replace("×", "").toLowerCase().trim();
+    String price = productPrice.getText().replace("$", "").trim();
+
+    return new Product(name, price, quantity);
+
   }
 
   @Step("filling bills")

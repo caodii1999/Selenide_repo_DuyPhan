@@ -15,17 +15,19 @@ public class ProductDetailsPage extends BasePage {
   private final SelenideElement productName = $(By.xpath(productNameLocator));
   private final String addToCartBtnLocator = "//button[@type = 'submit' and contains(text(), 'Add to cart')]";
   private final String productPriceLocator = "//div[@class='row']//p[@class='price']/ins | //div[@class='row']//p[@class='price']/span/bdi";
+  private final String productQuantityLocator = "//div[@class = 'quantity']//input[@class = 'input-text qty text']";
   private final SelenideElement addToCartBtn = $(By.xpath(addToCartBtnLocator));
   private final SelenideElement productPrice = $(By.xpath(productPriceLocator));
+  private final SelenideElement productQuantity = $(By.xpath(productQuantityLocator));
 
-  public Product getProductName() {
+  public Product getDetailProductInfo() {
     String name = productName.scrollIntoView(false).getText().toLowerCase().trim();
-    return new Product(name);
+    String price = productPrice.scrollIntoView(false).getText().replace("$", "").trim();
+    String quantity = productQuantity.scrollIntoView(false).getValue();
+
+    return new Product(name, price, quantity);
   }
 
-  public String getProductPrice() {
-    return productPrice.scrollIntoView(false).getText().trim();
-  }
 
   @Step("click on AddToCart button")
   public void ClickOnAddToCartBtn() {

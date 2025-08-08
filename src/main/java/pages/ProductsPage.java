@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import model.Product;
 import org.openqa.selenium.By;
 
 @Slf4j
@@ -56,8 +55,8 @@ public class ProductsPage extends BasePage {
     randomElement.shouldBe(enabled, Duration.ofSeconds(5)).scrollIntoView(false).click();
   }
 
-  @Step("add multiple items and get name")
-  public List<Product> addMultipleProductsToCartAndGetNames(int numberOfItemsToAdd) {
+  @Step("Add multiple items and get names")
+  public List<String> addMultipleProductsToCartAndGetNames(int numberOfItemsToAdd) {
     List<SelenideElement> buttons = new ArrayList<>(randomItemsAddToCartBtn.stream().toList());
     List<SelenideElement> names = new ArrayList<>(randomItems.stream().toList());
 
@@ -67,19 +66,21 @@ public class ProductsPage extends BasePage {
     }
     Collections.shuffle(indices);
 
-    List<Product> addedProductNames = new ArrayList<>();
+    List<String> addedProductNames = new ArrayList<>();
     int count = Math.min(numberOfItemsToAdd, indices.size());
 
     for (int i = 0; i < count; i++) {
       if (isSuccessPopupDisappeared()) {
         int index = indices.get(i);
         String productName = names.get(index).scrollIntoView(true).getText().toLowerCase();
-        addedProductNames.add(new Product(productName));
+        addedProductNames.add(productName);
         buttons.get(index).scrollIntoView(false).click();
       }
     }
+
     return addedProductNames;
   }
+
 
   public boolean isSuccessPopupDisappeared() {
     return !successAddToCartPopup.isDisplayed();

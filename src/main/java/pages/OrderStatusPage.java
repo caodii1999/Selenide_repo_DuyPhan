@@ -10,7 +10,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import model.Product;
 import org.openqa.selenium.By;
 
 public class OrderStatusPage extends BasePage {
@@ -36,18 +35,16 @@ public class OrderStatusPage extends BasePage {
     return paymentMethod.getText().trim();
   }
 
-  public List<Product> getAllProductsNames() {
+  public List<String> getProductNames() {
     return productsNames.stream()
-        .map(el -> {
-          String name = el.shouldBe(visible, Duration.ofSeconds(3))
-              .scrollIntoView(false)
-              .getText()
-              .toLowerCase()
-              .trim();
-          return new Product(name);
-        })
+        .map(el -> el.shouldBe(visible, Duration.ofSeconds(3))
+            .scrollIntoView(false)
+            .getText()
+            .toLowerCase()
+            .trim())
         .collect(Collectors.toList());
   }
+
 
   public List<String> getBillingInfo() {
     List<String> elements = new ArrayList<>();

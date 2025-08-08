@@ -9,6 +9,7 @@ import config.EnvConfig;
 import factory.UserFactory;
 import helper.DriverUtils;
 import lombok.extern.slf4j.Slf4j;
+import model.User;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
@@ -17,11 +18,12 @@ import org.testng.annotations.BeforeSuite;
 public class TestBase {
 
   protected EnvConfig config;
+  protected User defaultUser;
 
   @BeforeSuite
   public void globalSetup() {
     config = new EnvConfig();
-    new UserFactory(config).createDefaultUser();
+    defaultUser = UserFactory.createDefaultUser(config);
 
     Configuration.browser = config.getBrowser();
     Configuration.baseUrl = config.getBaseUrl();

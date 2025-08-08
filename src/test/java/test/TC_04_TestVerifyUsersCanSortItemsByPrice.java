@@ -1,10 +1,7 @@
 package test;
 
-import dataprovider.UserDataProvider;
-import enums.NavItems;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import model.User;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pages.HomePage;
@@ -12,7 +9,7 @@ import pages.MyAccountPage;
 import pages.ProductsPage;
 
 @Slf4j
-@Test(dataProvider = "userData", dataProviderClass = UserDataProvider.class)
+@Test()
 public class TC_04_TestVerifyUsersCanSortItemsByPrice extends TestBase {
 
   List<Double> sortedPrice;
@@ -22,12 +19,12 @@ public class TC_04_TestVerifyUsersCanSortItemsByPrice extends TestBase {
   HomePage homePage = new HomePage();
   ProductsPage productsPage = new ProductsPage();
 
-  public void TestSortItemsByPriceLowToHigh(User user) {
+  public void TestSortItemsByPriceLowToHigh() {
     homePage.clickOnMyAccountButton();
 
-    myAccountPage.login(user);
+    myAccountPage.login(defaultUser);
 
-    myAccountPage.clickOnNavItem(NavItems.SHOP.getItemName());
+    myAccountPage.navigateToShopPage();
 
     productsPage.switchViewToList();
 
@@ -40,12 +37,12 @@ public class TC_04_TestVerifyUsersCanSortItemsByPrice extends TestBase {
     softAssert.assertAll();
   }
 
-  public void TestSortItemsByPriceHighToLow(User user) {
+  public void TestSortItemsByPriceHighToLow() {
     homePage.clickOnMyAccountButton();
 
-    myAccountPage.login(user);
+    myAccountPage.login(defaultUser);
 
-    myAccountPage.clickOnNavItem(NavItems.SHOP.getItemName());
+    myAccountPage.navigateToShopPage();
 
     productsPage.switchViewToList();
 

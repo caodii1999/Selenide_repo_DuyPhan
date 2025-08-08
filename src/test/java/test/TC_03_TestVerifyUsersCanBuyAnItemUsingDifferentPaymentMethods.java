@@ -3,7 +3,6 @@ package test;
 import static com.codeborne.selenide.Selenide.refresh;
 
 import dataprovider.UserDataProvider;
-import enums.NavItems;
 import enums.Pages;
 import enums.PaymentMethod;
 import helper.DriverUtils;
@@ -35,9 +34,9 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
   public void TestBankTransferPaymentMethod(User user) {
     homePage.clickOnMyAccountButton();
 
-    myAccountPage.login(user);
+    myAccountPage.login(defaultUser);
 
-    myAccountPage.clickOnNavItem(NavItems.SHOP.getItemName());
+    myAccountPage.navigateToShopPage();
 
     productsPage.selectRandomItem();
     productDetailsPage.ClickOnAddToCartBtn();
@@ -64,9 +63,9 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
   public void TestCHECKPaymentMethod(User user) {
     homePage.clickOnMyAccountButton();
 
-    myAccountPage.login(user);
+    myAccountPage.login(defaultUser);
 
-    myAccountPage.clickOnNavItem(NavItems.SHOP.getItemName());
+    myAccountPage.navigateToShopPage();
 
     productsPage.selectRandomItem();
     productDetailsPage.ClickOnAddToCartBtn();
@@ -93,9 +92,9 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
   public void TestCODPaymentMethod(User user) {
     homePage.clickOnMyAccountButton();
 
-    myAccountPage.login(user);
+    myAccountPage.login(defaultUser);
 
-    myAccountPage.clickOnNavItem(NavItems.SHOP.getItemName());
+    myAccountPage.navigateToShopPage();
 
     productsPage.selectRandomItem();
 
@@ -110,7 +109,7 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
     checkoutPage.choosePaymentMethod(PaymentMethod.COD.getMethod());
 
     checkoutPage.fillBillingInfo(user);
-    
+
     checkoutPage.clickOnPlaceOrderBtn();
 
     softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
