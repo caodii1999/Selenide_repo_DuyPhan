@@ -2,6 +2,7 @@ package test;
 
 import dataprovider.UserDataProvider;
 import enums.NavItems;
+import helper.Constants;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import model.Product;
@@ -59,7 +60,13 @@ public class TC_08_TestUsersCanClearCart extends TestBase {
     softAssert.assertEquals(actualProductsNames, expectedProductsNames,
         "Verify items show in table");
 
+    shoppingCartPage.clickClearShoppingCart();
 
+    softAssert.assertTrue(shoppingCartPage.isCartEmpty(), "Cart is empty");
+
+    softAssert.assertEquals(shoppingCartPage.getEmptyCartMsg(), Constants.EMPTY_CART_MSG);
+
+    softAssert.assertAll();
   }
 
 }
