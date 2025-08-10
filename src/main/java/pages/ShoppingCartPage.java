@@ -86,6 +86,24 @@ public class ShoppingCartPage extends BasePage {
                 .collect(Collectors.toList());
     }
 
+  @Step("click on checkout button")
+  public void clickCheckoutBtn() {
+    proceedToCheckoutBtn.click();
+  }
+
+  @Step("click on Clear cart")
+  public void clearShoppingCart() {
+    clearCart.scrollIntoView(false).click();
+    switchTo().alert().accept();
+  }
+
+  public String getEmptyCartMsg() {
+    return emptyCartMsg.shouldBe(visible).getText();
+  }
+
+  public boolean isCartEmpty() {
+    return cartContent.isDisplayed();
+  }
     @Step("click on checkout button")
     public void clickCheckoutBtn() {
         log.info("Clicking on 'Proceed to Checkout' button");

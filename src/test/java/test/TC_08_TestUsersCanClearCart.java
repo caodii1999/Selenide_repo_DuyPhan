@@ -60,7 +60,7 @@ public class TC_08_TestUsersCanClearCart extends TestBase {
     softAssert.assertEquals(actualProductsNames, expectedProductsNames,
         "Verify items show in table");
 
-    shoppingCartPage.clickClearShoppingCart();
+    shoppingCartPage.clearShoppingCart();
 
     softAssert.assertTrue(shoppingCartPage.isCartEmpty(), "Cart is empty");
 
