@@ -25,21 +25,13 @@ public class ShoppingCartPage extends BasePage {
   private final SelenideElement proceedToCheckoutBtn = $(By.xpath(proceedToCheckoutBtnLocator));
 
 
-  public String getProductName() {
-    return productName.getText().toLowerCase().trim();
-  }
-
-  public String getProductPrice() {
-    return productPrice.getText().replace("$", "").trim();
-  }
-
-  public String getProductQuantity() {
-    return productQuantity.getValue();
-  }
-
-  @Step("get product info")
+  @Step("Get product info")
   public Product getSingleProductInfo() {
-    return new Product(getProductName(), getProductPrice(), getProductQuantity());
+    return new Product(
+        productName.getText().toLowerCase().trim(),
+        productPrice.getText().replace("$", "").trim(),
+        productQuantity.getValue()
+    );
   }
 
   @Step("get all products names in cart")
@@ -48,7 +40,6 @@ public class ShoppingCartPage extends BasePage {
         .map(el -> el.scrollIntoView(false).getText().toLowerCase())
         .collect(Collectors.toList());
   }
-
 
   @Step("click on checkout button")
   public void clickCheckoutBtn() {

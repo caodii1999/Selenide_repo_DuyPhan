@@ -7,9 +7,9 @@ import static com.codeborne.selenide.Selenide.$$;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import model.Billing;
 import org.openqa.selenium.By;
 
 public class OrderStatusPage extends BasePage {
@@ -26,6 +26,10 @@ public class OrderStatusPage extends BasePage {
   private final SelenideElement billingAddress = $(By.xpath(billingAddressLocator));
   private final String orderConfirmationMsgLocator = "//div[@class = 'woocommerce-order']//p[@class = 'woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received']";
   private final SelenideElement orderConfirmationMsg = $(By.xpath(orderConfirmationMsgLocator));
+  private final String actualPhoneLocator = "//p[@class = 'woocommerce-customer-details--phone']";
+  private final SelenideElement actualPhone = $(By.xpath(actualPhoneLocator));
+  private final String actualEmailLocator = "//p[@class = 'woocommerce-customer-details--email']";
+  private final SelenideElement actualEmail = $(By.xpath(actualEmailLocator));
 
   public String getProductName() {
     return productName.getText().trim();
@@ -45,15 +49,26 @@ public class OrderStatusPage extends BasePage {
         .collect(Collectors.toList());
   }
 
-
-  public List<String> getBillingInfo() {
-    List<String> elements = new ArrayList<>();
+  public Billing getBillingInfo() {
     String[] parts = billingAddress.getText().split("\n");
-    for (String part : parts) {
-      elements.add(part.trim());
-    }
-    return elements;
+
+    String fullName = parts[0].trim();
+    String address = parts[1].trim();
+    String city = parts[2].trim();
+    String country = parts[3].trim();
+    String phoneNumber = actualPhone.getText().trim();
+    String email = actualEmail.getText().trim();
+
+    return Billing.builder()
+        .fullName(fullName)
+        .address(address)
+        .city(city)
+        .country(country)
+        .phoneNumber(phoneNumber)
+        .email(email)
+        .build();
   }
+
 
   public boolean isConfirmationMsgDisplayed() {
     return orderConfirmationMsg.isDisplayed();

@@ -6,9 +6,8 @@ import dataprovider.UserDataProvider;
 import enums.Departments;
 import enums.Pages;
 import helper.DriverUtils;
-import java.util.Arrays;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import model.Billing;
 import model.Product;
 import model.User;
 import org.testng.annotations.Test;
@@ -44,8 +43,7 @@ public class TC_01_TestVerifyUsersCanBuyAnItemSuccessfully extends TestBase {
     String phoneNumber = user.getPhoneNumber();
     String email = user.getEmail();
 
-    List<String> expectedBillingInfo = Arrays.asList(fullName, address, city, country, phoneNumber,
-        email);
+    Billing expectedBillingInfo = new Billing(fullName, address, city, country, phoneNumber, email);
 
     homePage.clickOnMyAccountButton();
 
@@ -89,7 +87,8 @@ public class TC_01_TestVerifyUsersCanBuyAnItemSuccessfully extends TestBase {
     softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
         "order status page is displayed");
 
-    softAssert.assertEquals(orderStatusPage.getBillingInfo(), expectedBillingInfo);
+    softAssert.assertEquals(orderStatusPage.getBillingInfo(), expectedBillingInfo,
+        "compare billing info");
 
     softAssert.assertTrue(orderStatusPage.isConfirmationMsgDisplayed(),
         "confirmation message is displayed");
