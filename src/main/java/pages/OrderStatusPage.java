@@ -69,7 +69,6 @@ public class OrderStatusPage extends BasePage {
         .build();
   }
 
-
   public boolean isConfirmationMsgDisplayed() {
     return orderConfirmationMsg.isDisplayed();
   }
