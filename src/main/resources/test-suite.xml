@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="SelenideSuite">
+  <test name="RegressionTests">
+    <classes>
+      <class name="test.TC_01_TestVerifyUsersCanBuyAnItemSuccessfully"/>
+      <class name="test.TC_02_TestVerifyUsersCanBuyMultipleItemsSuccessfully"/>
+      <class name="test.TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods"/>
+      <class name="test.TC_04_TestVerifyUsersCanSortItemsByPrice"/>
+    </classes>
+  </test>
+</suite>
