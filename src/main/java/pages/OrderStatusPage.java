@@ -10,8 +10,10 @@ import io.qameta.allure.Step;
 import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Billing;
 import model.Order;
+import model.Product;
 import org.openqa.selenium.By;
 
 public class OrderStatusPage extends BasePage {
@@ -36,6 +38,10 @@ public class OrderStatusPage extends BasePage {
   private final SelenideElement orderNumber = $(By.xpath(orderNumberLocator));
   private final String orderDateLocator = "//div[@class = 'woocommerce-order-overview-wrapper']//ul//li[@class = 'woocommerce-order-overview__date date']//strong";
   private final SelenideElement orderDate = $(By.xpath(orderDateLocator));
+  private final String productPriceLocator = "//td[@class='woocommerce-table__product-total product-total']//span//bdi";
+  private final String productQuantityLocator = "//strong[@class='product-quantity']";
+  private final ElementsCollection productPrice = $$(By.xpath(productPriceLocator));
+  private final ElementsCollection productQuantity = $$(By.xpath(productQuantityLocator));
 
   public String getProductName() {
     return productName.getText().trim();
@@ -52,6 +58,30 @@ public class OrderStatusPage extends BasePage {
             .getText()
             .toLowerCase()
             .trim())
+        .collect(Collectors.toList());
+  }
+
+  public List<Product> getMultipleProductsInfo() {
+    return IntStream.range(0, productsNames.size())
+        .mapToObj(i -> {
+          String name = productsNames.get(i)
+              .shouldBe(visible, Duration.ofSeconds(3))
+              .scrollIntoView(false)
+              .getText()
+              .toLowerCase()
+              .trim();
+
+          String price = productPrice.get(i)
+              .getText()
+              .replace("$", "")
+              .trim();
+
+          String quantity = productQuantity.get(i)
+              .getText()
+              .replace("×", "")
+              .trim();
+          return new Product(name, price, quantity);
+        })
         .collect(Collectors.toList());
   }
 
