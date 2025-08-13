@@ -19,29 +19,32 @@ import org.openqa.selenium.By;
 @Slf4j
 public class CheckoutPage extends BasePage {
 
-  private final String productReviewLocator = "//div[@id= 'order_review']//table//tbody//tr";
-  private final String productNameLocator = productReviewLocator + "//td[@class = 'product-name']";
+  // ===== Base Locators =====
+  private final String productReviewLocator = "//div[@id='order_review']//table//tbody//tr";
+
+  // ===== Product Locators =====
+  private final String productNameLocator = productReviewLocator + "//td[@class='product-name']";
   private final SelenideElement productNameAndQuantity = $(By.xpath(productNameLocator));
-  private final String productPriceLocator = "//td[@class = 'product-total']//span//bdi";
+  private final String productPriceLocator = "//td[@class='product-total']//span//bdi";
+  private final String productQuantityLocator = "//strong[@class='product-quantity']";
   private final SelenideElement productPrice = $(By.xpath(productPriceLocator));
-  private final String productQuantityLocator = "//strong[@class = 'product-quantity']";
-  private final String dynamicBillingInputLocator = "//input[@id = '%s']";
-  private final String billingCountryDropdownLocator = "//span[@id = 'select2-billing_country-container']";
-  private final String billingCountryLocator = "//ul[@class = 'select2-results__options']//li";
-  private final String placeOrderBtnLocator = "//button[@id= 'place_order']";
   private final SelenideElement productQuantity = $(By.xpath(productQuantityLocator));
+
+  // ===== Billing Locators =====
+  private final String dynamicBillingInputLocator = "//input[@id='%s']";
+  private final String billingCountryDropdownLocator = "//span[@id='select2-billing_country-container']";
+  private final String billingCountryLocator = "//ul[@class='select2-results__options']//li";
+
+  private final String billingFirstNameInputLocator = "//input[@id='billing_first_name']";
+  private final String billingLastNameInputLocator = "//input[@id='billing_last_name']";
+  private final String billingAddressInputLocator = "//input[@id='billing_address_1']";
+  private final String billingCityInputLocator = "//input[@id='billing_city']";
+  private final String billingPhoneNumberInputLocator = "//input[@id='billing_phone']";
+  private final String billingEmailInputLocator = "//input[@id='billing_email']";
+
   private final SelenideElement billingCountryDropdown = $(By.xpath(billingCountryDropdownLocator));
   private final ElementsCollection billingCountries = $$(By.xpath(billingCountryLocator));
-  //  private final SelenideElement billingEmailInput = $(By.xpath(billingEmailInputLocator));
-  private final SelenideElement placeOrderBtn = $(By.xpath(placeOrderBtnLocator));
-  private final String dynamicPaymentMethodsLocator = "//div[@id = 'order_review']//div//ul//li//label[contains(text(), '%s')]";
-  private final String errorMsgLocator = "//div[@class = 'woocommerce-NoticeGroup woocommerce-NoticeGroup-checkout']//ul[@class = 'woocommerce-error']//li[@data-id ='%s']";
-  private final String billingFirstNameInputLocator = "//input[@id = 'billing_first_name']";
-  private final String billingLastNameInputLocator = "//input[@id = 'billing_last_name']";
-  private final String billingAddressInputLocator = "//input[@id = 'billing_address_1']";
-  private final String billingCityInputLocator = "//input[@id = 'billing_city']";
-  private final String billingPhoneNumberInputLocator = "//input[@id = 'billing_phone']";
-  private final String billingEmailInputLocator = "//input[@id = 'billing_email']";
+
   private final SelenideElement billingFirstNameInput = $(By.xpath(billingFirstNameInputLocator));
   private final SelenideElement billingLastNameInput = $(By.xpath(billingLastNameInputLocator));
   private final SelenideElement billingAddressInput = $(By.xpath(billingAddressInputLocator));
@@ -49,6 +52,20 @@ public class CheckoutPage extends BasePage {
   private final SelenideElement billingPhoneNumberInput = $(
       By.xpath(billingPhoneNumberInputLocator));
   private final SelenideElement billingEmailInput = $(By.xpath(billingEmailInputLocator));
+
+  // ===== Payment Locators =====
+  private final String dynamicPaymentMethodsLocator =
+      "//div[@id='order_review']//div//ul//li//label[contains(text(), '%s')]";
+
+  // ===== Buttons =====
+  private final String placeOrderBtnLocator = "//button[@id='place_order']";
+  private final SelenideElement placeOrderBtn = $(By.xpath(placeOrderBtnLocator));
+
+  // ===== Error Messages =====
+  private final String errorMsgLocator =
+      "//div[@class='woocommerce-NoticeGroup woocommerce-NoticeGroup-checkout']" +
+          "//ul[@class='woocommerce-error']//li[@data-id='%s']";
+
 
   public Product getProductInfo() {
     String fullProductName = productNameAndQuantity.getText();

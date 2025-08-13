@@ -57,11 +57,11 @@ public class MyAccountPage extends BasePage {
     clickOnMyAccountNavigationButton(AccountNavItems.LOGOUT.getItem());
   }
 
-  public Order getOrderInfo(int nums) {
+  public Order getOrderInfo(int num) {
     SelenideElement dynamicOrderNumber = $(
-        By.xpath(String.format(dynamicOrderNumberLocator, nums)));
+        By.xpath(String.format(dynamicOrderNumberLocator, num)));
     int orderNumber = Integer.parseInt(dynamicOrderNumber.getText().replace("#", "").trim());
-    String orderDate = $(By.xpath(String.format(dynamicOrderDateLocator, nums))).getText()
+    String orderDate = $(By.xpath(String.format(dynamicOrderDateLocator, num))).getText()
         .toLowerCase();
 
     return new Order(orderNumber, orderDate);
