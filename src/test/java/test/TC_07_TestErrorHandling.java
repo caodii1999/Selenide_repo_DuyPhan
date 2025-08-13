@@ -1,7 +1,8 @@
 package test;
 
+import static com.codeborne.selenide.Selenide.refresh;
+
 import dataprovider.UserDataProvider;
-import enums.Pages;
 import lombok.extern.slf4j.Slf4j;
 import model.User;
 import org.testng.annotations.Test;
@@ -26,18 +27,27 @@ public class TC_07_TestErrorHandling extends TestBase {
   CheckoutPage checkoutPage = new CheckoutPage();
 
   public void TestErrorHandling(User missingInfoUser) {
-    User validUser = User.builder().build();
 
     homePage.clickOnMyAccountButton();
-    myAccountPage.login(validUser);
-    myAccountPage.clickOnNavItem(Pages.SHOP.getPageName());
+
+    myAccountPage.login(User.defaultUser());
+
+    myAccountPage.navigateToShopPage();
+
     productsPage.selectRandomItem();
+
     productDetailsPage.ClickOnAddToCartBtn();
+
     productDetailsPage.clickOnMyCartButton();
+
+    refresh(); //need to refresh due to page does not update product to cart at first
+
     shoppingCartPage.clickCheckoutBtn();
 
     checkoutPage.fillBillingInfo(missingInfoUser);
+
     checkoutPage.clickOnPlaceOrderBtn();
+    
     softAssert.assertTrue(checkoutPage.isErrorMsgMatchMissingField());
 
     softAssert.assertAll();

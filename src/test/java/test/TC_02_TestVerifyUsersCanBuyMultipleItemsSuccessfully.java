@@ -37,7 +37,7 @@ public class TC_02_TestVerifyUsersCanBuyMultipleItemsSuccessfully extends TestBa
 
     homePage.clickOnMyAccountButton();
 
-    myAccountPage.login(defaultUser);
+    myAccountPage.login(User.defaultUser());
 
     myAccountPage.navigateToShopPage();
 

@@ -1,5 +1,7 @@
 package model;
 
+import config.EmailConfig;
+import config.EnvConfig;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,6 +30,24 @@ public class User {
   public User(String email, String password) {
     this.email = email;
     this.password = password;
+  }
+
+  public static User defaultUser() {
+    EnvConfig config = new EnvConfig();
+    String email = config.getEmail();
+    String password = config.getPassword();
+
+    if (email.isEmpty()) {
+      try {
+        email = EmailConfig.getEmailAddress();
+      } catch (Exception e) {
+        throw new RuntimeException("Failed to fetch email from API", e);
+      }
+    }
+    return User.builder()
+        .email(email)
+        .password(password)
+        .build();
   }
 
   public String getFullName() {

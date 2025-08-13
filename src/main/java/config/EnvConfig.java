@@ -61,4 +61,8 @@ public class EnvConfig {
   public String getBrowser() {
     return getProperty("browser");
   }
+
+  public String getRemoteUrl() {
+    return getProperty("remoteURL");
+  }
 }

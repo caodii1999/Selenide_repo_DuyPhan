@@ -6,10 +6,12 @@ import static com.codeborne.selenide.Selenide.$$;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 import model.Billing;
+import model.Order;
 import org.openqa.selenium.By;
 
 public class OrderStatusPage extends BasePage {
@@ -30,6 +32,10 @@ public class OrderStatusPage extends BasePage {
   private final SelenideElement actualPhone = $(By.xpath(actualPhoneLocator));
   private final String actualEmailLocator = "//p[@class = 'woocommerce-customer-details--email']";
   private final SelenideElement actualEmail = $(By.xpath(actualEmailLocator));
+  private final String orderNumberLocator = "//div[@class = 'woocommerce-order-overview-wrapper']//ul//li[@class = 'woocommerce-order-overview__order order']//strong";
+  private final SelenideElement orderNumber = $(By.xpath(orderNumberLocator));
+  private final String orderDateLocator = "//div[@class = 'woocommerce-order-overview-wrapper']//ul//li[@class = 'woocommerce-order-overview__date date']//strong";
+  private final SelenideElement orderDate = $(By.xpath(orderDateLocator));
 
   public String getProductName() {
     return productName.getText().trim();
@@ -67,6 +73,21 @@ public class OrderStatusPage extends BasePage {
         .phoneNumber(phoneNumber)
         .email(email)
         .build();
+  }
+
+  public int getOrderNumber() {
+    return Integer.parseInt(orderNumber.getText().trim());
+  }
+
+  public String getOrderDate() {
+    return orderDate.getText().trim().toLowerCase();
+  }
+
+  @Step("get order information")
+  public Order getOrderInfo() {
+    int number = getOrderNumber();
+    String date = getOrderDate();
+    return new Order(number, date);
   }
 
   public boolean isConfirmationMsgDisplayed() {

@@ -47,7 +47,7 @@ public class TC_01_TestVerifyUsersCanBuyAnItemSuccessfully extends TestBase {
 
     homePage.clickOnMyAccountButton();
 
-    myAccountPage.login(defaultUser);
+    myAccountPage.login(User.defaultUser());
 
     myAccountPage.selectDepartment(Departments.ELECTRONIC_COMPONENT.getType());
 

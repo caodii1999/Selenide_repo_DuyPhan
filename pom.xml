@@ -5,7 +5,7 @@
   <artifactId>org</artifactId>
   <build>
     <plugins>
-      <!-- Compiler plugin to set Java version -->
+      <!-- Compiler plugin -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
@@ -14,17 +14,45 @@
         <groupId>org.apache.maven.plugins</groupId>
         <version>3.11.0</version>
       </plugin>
+
+      <!-- Surefire plugin -->
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <suiteXmlFiles>
+            <suiteXmlFile>test-suite.xml</suiteXmlFile>
+          </suiteXmlFiles>
+        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>3.2.5</version>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>${project.basedir}/allure-results</directory>
+            </fileset>
+            <fileset>
+              <directory>${project.build.directory}/allure-results</directory>
+            </fileset>
+          </filesets>
+        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>3.5.0</version>
+      </plugin>
+
     </plugins>
   </build>
+
   <dependencies>
-    <!-- Selenide -->
     <dependency>
       <artifactId>selenide</artifactId>
       <groupId>com.codeborne</groupId>
       <version>7.9.4</version>
     </dependency>
 
-    <!-- SLF4J for logging -->
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
     <dependency>
       <artifactId>slf4j-simple</artifactId>
@@ -76,14 +104,14 @@
     </dependency>
   </dependencies>
   <groupId>org</groupId>
+
   <modelVersion>4.0.0</modelVersion>
+
   <name>Selenide</name>
 
   <properties>
     <maven.compiler.release>21</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-
   <version>0.0.1-SNAPSHOT</version>
-
 </project>

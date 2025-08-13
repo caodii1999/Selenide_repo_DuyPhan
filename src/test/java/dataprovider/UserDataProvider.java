@@ -21,7 +21,7 @@ public class UserDataProvider {
             .address("253 Hoang Van Thu")
             .city("Ho Chi Minh")
             .phoneNumber("1234567890")
-            .email(defaultUser.getEmail())
+            .email(User.defaultUser().getEmail())
             .build()
     }};
   }
@@ -36,6 +36,7 @@ public class UserDataProvider {
             .address("253 Hoang Van Thu")
             .city("Ho Chi Minh")
             .phoneNumber("1234567890")
+            .email(User.defaultUser().getEmail())
             .build()},
         {User.builder()
             .firstName("Duy")
@@ -44,6 +45,7 @@ public class UserDataProvider {
             .address("253 Hoang Van Thu")
             .city("Ho Chi Minh")
             .phoneNumber("1234567890")
+            .email(User.defaultUser().getEmail())
             .build()},
         {User.builder()
             .firstName("Duy")
@@ -52,6 +54,7 @@ public class UserDataProvider {
             .address("")
             .city("Ho Chi Minh")
             .phoneNumber("1234567890")
+            .email(User.defaultUser().getEmail())
             .build()},
         {User.builder()
             .firstName("Duy")
@@ -60,6 +63,7 @@ public class UserDataProvider {
             .address("253 Hoang Van Thu")
             .city("")
             .phoneNumber("1234567890")
+            .email(User.defaultUser().getEmail())
             .build()},
         {User.builder()
             .firstName("Duy")
@@ -68,6 +72,7 @@ public class UserDataProvider {
             .address("253 Hoang Van Thu")
             .city("Ho Chi Minh")
             .phoneNumber("")
+            .email(User.defaultUser().getEmail())
             .build()},
         {User.builder()
             .firstName("Duy")
@@ -80,6 +85,5 @@ public class UserDataProvider {
             .build()}
     };
   }
-
 }
 

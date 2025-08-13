@@ -34,13 +34,17 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
   public void TestBankTransferPaymentMethod(User user) {
     homePage.clickOnMyAccountButton();
 
-    myAccountPage.login(defaultUser);
+    myAccountPage.login(User.defaultUser());
 
     myAccountPage.navigateToShopPage();
 
     productsPage.selectRandomItem();
+
     productDetailsPage.ClickOnAddToCartBtn();
+
     productDetailsPage.clickOnMyCartButton();
+
+    refresh(); //need to refresh due to page does not update product to cart at first
 
     shoppingCartPage.clickCheckoutBtn();
 
@@ -63,13 +67,17 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
   public void TestCHECKPaymentMethod(User user) {
     homePage.clickOnMyAccountButton();
 
-    myAccountPage.login(defaultUser);
+    myAccountPage.login(User.defaultUser());
 
     myAccountPage.navigateToShopPage();
 
     productsPage.selectRandomItem();
+
     productDetailsPage.ClickOnAddToCartBtn();
+
     productDetailsPage.clickOnMyCartButton();
+    
+    refresh(); //need to refresh due to page does not update product to cart at first
 
     shoppingCartPage.clickCheckoutBtn();
 
@@ -92,7 +100,7 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
   public void TestCODPaymentMethod(User user) {
     homePage.clickOnMyAccountButton();
 
-    myAccountPage.login(defaultUser);
+    myAccountPage.login(User.defaultUser());
 
     myAccountPage.navigateToShopPage();
 

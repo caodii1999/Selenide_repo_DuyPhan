@@ -6,8 +6,11 @@ import static com.codeborne.selenide.Selenide.$$;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import enums.BillingInputs;
+import helper.Constants;
 import helper.ElementUtils;
 import io.qameta.allure.Step;
+import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import model.Product;
 import model.User;
@@ -27,14 +30,25 @@ public class CheckoutPage extends BasePage {
   private final String billingCountryLocator = "//ul[@class = 'select2-results__options']//li";
   private final String placeOrderBtnLocator = "//button[@id= 'place_order']";
   private final SelenideElement productQuantity = $(By.xpath(productQuantityLocator));
-
   private final SelenideElement billingCountryDropdown = $(By.xpath(billingCountryDropdownLocator));
   private final ElementsCollection billingCountries = $$(By.xpath(billingCountryLocator));
-//  private final SelenideElement billingEmailInput = $(By.xpath(billingEmailInputLocator));
-
+  //  private final SelenideElement billingEmailInput = $(By.xpath(billingEmailInputLocator));
   private final SelenideElement placeOrderBtn = $(By.xpath(placeOrderBtnLocator));
-
   private final String dynamicPaymentMethodsLocator = "//div[@id = 'order_review']//div//ul//li//label[contains(text(), '%s')]";
+  private final String errorMsgLocator = "//div[@class = 'woocommerce-NoticeGroup woocommerce-NoticeGroup-checkout']//ul[@class = 'woocommerce-error']//li[@data-id ='%s']";
+  private final String billingFirstNameInputLocator = "//input[@id = 'billing_first_name']";
+  private final String billingLastNameInputLocator = "//input[@id = 'billing_last_name']";
+  private final String billingAddressInputLocator = "//input[@id = 'billing_address_1']";
+  private final String billingCityInputLocator = "//input[@id = 'billing_city']";
+  private final String billingPhoneNumberInputLocator = "//input[@id = 'billing_phone']";
+  private final String billingEmailInputLocator = "//input[@id = 'billing_email']";
+  private final SelenideElement billingFirstNameInput = $(By.xpath(billingFirstNameInputLocator));
+  private final SelenideElement billingLastNameInput = $(By.xpath(billingLastNameInputLocator));
+  private final SelenideElement billingAddressInput = $(By.xpath(billingAddressInputLocator));
+  private final SelenideElement billingCityInput = $(By.xpath(billingCityInputLocator));
+  private final SelenideElement billingPhoneNumberInput = $(
+      By.xpath(billingPhoneNumberInputLocator));
+  private final SelenideElement billingEmailInput = $(By.xpath(billingEmailInputLocator));
 
   public Product getProductInfo() {
     String fullProductName = productNameAndQuantity.getText();
@@ -74,5 +88,38 @@ public class CheckoutPage extends BasePage {
     if (!paymentOption.isSelected()) {
       paymentOption.click();
     }
+  }
+
+  public boolean isErrorMsgMatchMissingField() {
+    Map<String, String> expectedErrorMessages = Map.of(
+        "billing_first_name", Constants.BILLING_FIRST_NAME_ERROR,
+        "billing_last_name", Constants.BILLING_LAST_NAME_ERROR,
+        "billing_address_1", Constants.BILLING_ADDRESS_ERROR,
+        "billing_city", Constants.BILLING_CITY_ERROR,
+        "billing_phone", Constants.BILLING_PHONE_ERROR,
+        "billing_email", Constants.BILLING_EMAIL_ERROR
+    );
+
+    List<SelenideElement> fields = List.of(
+        billingFirstNameInput,
+        billingLastNameInput,
+        billingAddressInput,
+        billingCityInput,
+        billingPhoneNumberInput,
+        billingEmailInput
+    );
+
+    for (SelenideElement field : fields) {
+      if (field.getValue().isBlank()) {
+        String id = field.getAttribute("id").trim();
+        String expected = expectedErrorMessages.get(id);
+        System.out.println(expected);
+        String actual = $(By.xpath(String.format(errorMsgLocator, id)))
+            .getText().replace("\"", "").trim();
+        System.out.println(actual);
+        return actual.equals(expected);
+      }
+    }
+    return false;
   }
 }

@@ -2,6 +2,10 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 
 <suite name="SelenideSuite">
+  <listeners>
+    <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    <listener class-name="report.AllureListener"/>
+  </listeners>
   <test name="RegressionTests">
     <classes>
       <class name="test.TC_01_TestVerifyUsersCanBuyAnItemSuccessfully"/>
@@ -10,6 +14,7 @@
       <class name="test.TC_04_TestVerifyUsersCanSortItemsByPrice"/>
       <class name="test.TC_05_TestVerifyOrdersAppearInOrderHistory"/>
       <class name="test.TC_06_TestVerifyUsersTryToBuyAnItemWithoutLoggingIn"/>
+      <class name="test.TC_07_TestErrorHandling"/>
     </classes>
   </test>
 </suite>

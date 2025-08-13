@@ -6,10 +6,8 @@ import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import config.EnvConfig;
-import factory.UserFactory;
 import helper.DriverUtils;
 import lombok.extern.slf4j.Slf4j;
-import model.User;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
@@ -17,18 +15,15 @@ import org.testng.annotations.BeforeSuite;
 @Slf4j
 public class TestBase {
 
-  protected EnvConfig config;
-  protected User defaultUser;
-
   @BeforeSuite
   public void globalSetup() {
-    config = new EnvConfig();
-    defaultUser = UserFactory.createDefaultUser(config);
+    EnvConfig config = new EnvConfig();
 
     Configuration.browser = config.getBrowser();
     Configuration.baseUrl = config.getBaseUrl();
     Configuration.timeout = 10000; // 10 seconds
     Configuration.pageLoadTimeout = 30000; // 30 seconds
+//    Configuration.remote = config.getRemoteUrl();
 
     log.info("Test suite initialized with browser: {} and base URL: {}",
         config.getBrowser(), config.getBaseUrl());
@@ -36,6 +31,7 @@ public class TestBase {
 
   @BeforeMethod
   public void setup() {
+    EnvConfig config = new EnvConfig();
     try {
       open(config.getBaseUrl());
 

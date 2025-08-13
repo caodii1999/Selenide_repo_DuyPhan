@@ -1,7 +1,8 @@
 package test;
 
+import static com.codeborne.selenide.Selenide.refresh;
+
 import dataprovider.UserDataProvider;
-import enums.NavItems;
 import enums.Pages;
 import helper.DriverUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -28,23 +29,27 @@ public class TC_06_TestVerifyUsersTryToBuyAnItemWithoutLoggingIn extends TestBas
   OrderStatusPage orderStatusPage = new OrderStatusPage();
 
   public void TestVerifyUsersTryToBuyAnItemWithoutLoggingIn(User user) {
-//  2. Navigate to 'Shop' or 'Products' section
-    homePage.clickOnNavItem(NavItems.SHOP.getItemName());
 
-//  3. Add a product to cart
+    homePage.navigateToShopPage();
+
     productsPage.selectRandomItem();
+
     productDetailsPage.ClickOnAddToCartBtn();
 
-//  4. Click on Cart button
     productsPage.clickOnMyCartButton();
 
-//  5. Proceed to complete order
+    refresh(); //need to refresh due to page does not update product to cart at first
+
     shoppingCartPage.clickCheckoutBtn();
+
     checkoutPage.fillBillingInfo(user);
+
     checkoutPage.clickOnPlaceOrderBtn();
 
     DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName());
+
     softAssert.assertTrue(orderStatusPage.isConfirmationMsgDisplayed());
+
     softAssert.assertAll();
   }
 }
