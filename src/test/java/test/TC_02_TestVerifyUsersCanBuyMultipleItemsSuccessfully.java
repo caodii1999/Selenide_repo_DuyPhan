@@ -1,71 +1,67 @@
 package test;
 
-import static com.codeborne.selenide.Selenide.refresh;
-
+import com.codeborne.selenide.Selenide;
 import dataprovider.UserDataProvider;
 import enums.Pages;
 import helper.DriverUtils;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import model.Product;
 import model.User;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import pages.CheckoutPage;
-import pages.HomePage;
-import pages.MyAccountPage;
-import pages.OrderStatusPage;
-import pages.ProductsPage;
-import pages.ShoppingCartPage;
+import pages.*;
+
+import java.util.List;
 
 @Slf4j
 @Test(dataProvider = "userData", dataProviderClass = UserDataProvider.class)
 public class TC_02_TestVerifyUsersCanBuyMultipleItemsSuccessfully extends TestBase {
 
-  SoftAssert softAssert = new SoftAssert();
-  MyAccountPage myAccountPage = new MyAccountPage();
-  HomePage homePage = new HomePage();
-  ProductsPage productsPage = new ProductsPage();
-  ShoppingCartPage shoppingCartPage = new ShoppingCartPage();
-  CheckoutPage checkoutPage = new CheckoutPage();
-  OrderStatusPage orderStatusPage = new OrderStatusPage();
+    SoftAssert softAssert = new SoftAssert();
+    MyAccountPage myAccountPage = new MyAccountPage();
+    HomePage homePage = new HomePage();
+    ProductsPage productsPage = new ProductsPage();
+    ShoppingCartPage shoppingCartPage = new ShoppingCartPage();
+    CheckoutPage checkoutPage = new CheckoutPage();
+    OrderStatusPage orderStatusPage = new OrderStatusPage();
 
-  List<String> expectedProductsNames;
-  List<String> actualProductsNames;
-  List<String> purchasedProductsNames;
+    List<Product> expectedProductsInfo;
+    List<Product> actualProductsInfo;
+    List<Product> purchasedProductsNames;
 
-  public void VerifyUsersCanBuyMultipleItemsSuccessfully(User user) {
+    public void VerifyUsersCanBuyMultipleItemsSuccessfully(User user) {
 
-    homePage.clickOnMyAccountButton();
+        homePage.clickOnMyAccountButton();
 
-    myAccountPage.login(User.defaultUser());
+        myAccountPage.login(User.defaultUser());
 
-    myAccountPage.navigateToShopPage();
+        myAccountPage.navigateToShopPage();
 
-    expectedProductsNames = productsPage.addMultipleProductsToCartAndGetNames(3);
+        expectedProductsInfo = productsPage.addMultipleProductsToCartAndGetInfo(3);
 
-    productsPage.clickOnMyCartButton();
+        productsPage.clickOnMyCartButton();
 
-    refresh(); //need to refresh due to page does not update product to cart at first
+        Selenide.refresh(); //need to refresh due to page does not update product to cart at first
 
-    actualProductsNames = shoppingCartPage.getAllProductNames(); // here
+        actualProductsInfo = shoppingCartPage.getAllProductsInCart(); // here
 
-    softAssert.assertEquals(actualProductsNames, expectedProductsNames, "step 5");
+        softAssert.assertEquals(actualProductsInfo, expectedProductsInfo, "step 5");
 
-    shoppingCartPage.clickCheckoutBtn();
+        shoppingCartPage.clickCheckoutBtn();
 
-    checkoutPage.fillBillingInfo(user);
+        checkoutPage.fillBillingInfo(user);
 
-    checkoutPage.clickOnPlaceOrderBtn();
+        checkoutPage.clickOnPlaceOrderBtn();
 
-    softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
-        "order status page is displayed");
+        softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
+                "order status page is displayed");
 
-    softAssert.assertTrue(orderStatusPage.isConfirmationMsgDisplayed());
+        softAssert.assertTrue(orderStatusPage.isConfirmationMsgDisplayed());
 
-    purchasedProductsNames = orderStatusPage.getProductNames();
+        purchasedProductsNames = orderStatusPage.getMultipleProductsInfo();
 
-    softAssert.assertEquals(purchasedProductsNames, expectedProductsNames, "step 6");
+        softAssert.assertEquals(purchasedProductsNames, expectedProductsInfo, "step 6");
 
-    softAssert.assertAll();
-  }
+        softAssert.assertAll();
+    }
 }

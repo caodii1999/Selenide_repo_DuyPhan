@@ -1,6 +1,5 @@
 package test;
 
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import model.User;
 import org.testng.annotations.Test;
@@ -9,50 +8,52 @@ import pages.HomePage;
 import pages.MyAccountPage;
 import pages.ProductsPage;
 
+import java.util.List;
+
 @Slf4j
 @Test()
 public class TC_04_TestVerifyUsersCanSortItemsByPrice extends TestBase {
 
-  List<Double> sortedPrice;
+    List<Double> sortedPrice;
 
-  SoftAssert softAssert = new SoftAssert();
-  MyAccountPage myAccountPage = new MyAccountPage();
-  HomePage homePage = new HomePage();
-  ProductsPage productsPage = new ProductsPage();
+    SoftAssert softAssert = new SoftAssert();
+    MyAccountPage myAccountPage = new MyAccountPage();
+    HomePage homePage = new HomePage();
+    ProductsPage productsPage = new ProductsPage();
 
-  public void TestSortItemsByPriceLowToHigh() {
-    homePage.clickOnMyAccountButton();
+    public void TestSortItemsByPriceLowToHigh() {
+        homePage.clickOnMyAccountButton();
 
-    myAccountPage.login(User.defaultUser());
+        myAccountPage.login(User.defaultUser());
 
-    myAccountPage.navigateToShopPage();
+        myAccountPage.navigateToShopPage();
 
-    productsPage.switchViewToList();
+        productsPage.switchViewToList();
 
-    productsPage.selectLowToHighSortOption();
+        productsPage.selectLowToHighSortOption();
 
-    sortedPrice = productsPage.getProductPrices();
+        sortedPrice = productsPage.getProductPrices();
 
-    softAssert.assertTrue(productsPage.isSortedLowToHigh(sortedPrice), "sorted");
+        softAssert.assertTrue(productsPage.isSortedLowToHigh(sortedPrice), "sorted");
 
-    softAssert.assertAll();
-  }
+        softAssert.assertAll();
+    }
 
-  public void TestSortItemsByPriceHighToLow() {
-    homePage.clickOnMyAccountButton();
+    public void TestSortItemsByPriceHighToLow() {
+        homePage.clickOnMyAccountButton();
 
-    myAccountPage.login(User.defaultUser());
+        myAccountPage.login(User.defaultUser());
 
-    myAccountPage.navigateToShopPage();
+        myAccountPage.navigateToShopPage();
 
-    productsPage.switchViewToList();
+        productsPage.switchViewToList();
 
-    productsPage.selectHighToLowSortOption();
+        productsPage.selectHighToLowSortOption();
 
-    sortedPrice = productsPage.getProductPrices();
+        sortedPrice = productsPage.getProductPrices();
 
-    softAssert.assertTrue(productsPage.isSortedHighToLow(sortedPrice), "sorted");
+        softAssert.assertTrue(productsPage.isSortedHighToLow(sortedPrice), "sorted");
 
-    softAssert.assertAll();
-  }
+        softAssert.assertAll();
+    }
 }

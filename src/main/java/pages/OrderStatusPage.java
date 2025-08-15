@@ -51,16 +51,6 @@ public class OrderStatusPage extends BasePage {
     return paymentMethod.getText().trim();
   }
 
-  public List<String> getProductNames() {
-    return productsNames.stream()
-        .map(el -> el.shouldBe(visible, Duration.ofSeconds(3))
-            .scrollIntoView(false)
-            .getText()
-            .toLowerCase()
-            .trim())
-        .collect(Collectors.toList());
-  }
-
   public List<Product> getMultipleProductsInfo() {
     return IntStream.range(0, productsNames.size())
         .mapToObj(i -> {
@@ -80,6 +70,7 @@ public class OrderStatusPage extends BasePage {
               .getText()
               .replace("×", "")
               .trim();
+
           return new Product(name, price, quantity);
         })
         .collect(Collectors.toList());

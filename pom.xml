@@ -2,10 +2,8 @@
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <artifactId>org</artifactId>
-
   <build>
     <plugins>
-      <!-- Compiler plugin -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
@@ -14,8 +12,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <version>3.11.0</version>
       </plugin>
-
-      <!-- Surefire plugin with javaagent -->
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
@@ -29,8 +25,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <version>3.2.5</version>
       </plugin>
-
-      <!-- Clean plugin to remove allure results -->
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
         <configuration>
@@ -49,64 +43,48 @@
     </plugins>
   </build>
   <dependencies>
-    <!-- Selenide -->
     <dependency>
       <artifactId>selenide</artifactId>
       <groupId>com.codeborne</groupId>
       <version>7.9.4</version>
     </dependency>
-
-    <!-- Logging -->
     <dependency>
       <artifactId>slf4j-simple</artifactId>
       <groupId>org.slf4j</groupId>
       <version>2.0.17</version>
     </dependency>
-
     <dependency>
       <artifactId>logback-classic</artifactId>
       <groupId>ch.qos.logback</groupId>
       <version>1.4.14</version>
     </dependency>
-
-    <!-- TestNG -->
     <dependency>
       <artifactId>testng</artifactId>
       <groupId>org.testng</groupId>
       <scope>test</scope>
       <version>7.11.0</version>
     </dependency>
-
-    <!-- JSON -->
     <dependency>
       <artifactId>json</artifactId>
       <groupId>org.json</groupId>
       <version>20240303</version>
     </dependency>
-
-    <!-- WebDriverManager -->
     <dependency>
       <artifactId>webdrivermanager</artifactId>
       <groupId>io.github.bonigarcia</groupId>
       <version>6.2.0</version>
     </dependency>
-
-    <!-- Lombok -->
     <dependency>
       <artifactId>lombok</artifactId>
       <groupId>org.projectlombok</groupId>
       <scope>provided</scope>
       <version>1.18.38</version>
     </dependency>
-
-    <!-- Allure Reporting -->
     <dependency>
       <artifactId>allure-testng</artifactId>
       <groupId>io.qameta.allure</groupId>
       <version>2.29.1</version>
     </dependency>
-
-    <!-- AspectJ Weaver -->
     <dependency>
       <artifactId>aspectjweaver</artifactId>
       <groupId>org.aspectj</groupId>

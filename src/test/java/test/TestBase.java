@@ -1,57 +1,57 @@
 package test;
 
-import static com.codeborne.selenide.Selenide.open;
-
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.WebDriverRunner;
 import config.EnvConfig;
 import helper.DriverUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.*;
+
+import static com.codeborne.selenide.Selenide.open;
 
 @Slf4j
 public class TestBase {
 
-  @BeforeSuite
-  public void globalSetup() {
-    EnvConfig config = new EnvConfig();
+    @BeforeSuite(alwaysRun = true)
+    public void globalSetup() {
+        EnvConfig config = new EnvConfig();
 
-    Configuration.browser = config.getBrowser();
-    Configuration.baseUrl = config.getBaseUrl();
-    Configuration.timeout = 10000; // 10 seconds
-    Configuration.pageLoadTimeout = 30000; // 30 seconds
-//    Configuration.remote = config.getRemoteUrl();
+        if (config.getRemoteUrl() != null && !config.getRemoteUrl().isEmpty()) {
+            Configuration.remote = config.getRemoteUrl();
+        } else {
+            Configuration.remote = null;
+        }
 
-    log.info("Test suite initialized with browser: {} and base URL: {}",
-        config.getBrowser(), config.getBaseUrl());
-  }
+        Configuration.browser = config.getBrowser();
+        Configuration.timeout = 10000;
+        Configuration.pageLoadTimeout = 30000;
+        Configuration.reportsFolder = "target/reports";
 
-  @BeforeMethod
-  public void setup() {
-    EnvConfig config = new EnvConfig();
-    try {
-      open(config.getBaseUrl());
-
-      WebDriverRunner.getWebDriver().manage().window().maximize();
-
-      DriverUtils.disableAds();
-      DriverUtils.hidePopup();
-      DriverUtils.dismissCookieBanner();
-
-      log.info("Test setup completed successfully");
-
-    } catch (Exception e) {
-      log.error("Failed to setup test: {}", e.getMessage(), e);
-      throw new RuntimeException("Test setup failed", e);
+        log.info("Selenium Grid Hub URL: {}", Configuration.remote);
+        log.info("Running tests on browser: {}", Configuration.browser);
     }
-  }
 
-  @AfterMethod
-  public void tearDown() {
-    Selenide.clearBrowserCookies();
-    Selenide.closeWebDriver();
-  }
+    @BeforeMethod(alwaysRun = true)
+    @Parameters({"browser"})
+    public void setup(@Optional String browser) {
+
+        if (browser != null && !browser.isEmpty()) {
+            Configuration.browser = browser;
+        }
+
+        open(new EnvConfig().getBaseUrl());
+
+        log.info("Opening browser: {}", Configuration.browser);
+        log.info("Remote URL: {}", Configuration.remote);
+
+        DriverUtils.disableAds();
+        DriverUtils.hidePopup();
+        DriverUtils.dismissCookieBanner();
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public void tearDown() {
+        Selenide.clearBrowserCookies();
+        Selenide.closeWebDriver();
+    }
 }
