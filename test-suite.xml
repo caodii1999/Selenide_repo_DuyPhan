@@ -1,0 +1,42 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="SelenideSuite" parallel="tests" thread-count="4">
+    <listeners>
+        <listener class-name="report.AllureListener"/>
+    </listeners>
+
+    <!-- Chrome Node 1 -->
+    <test name="ChromeTests1">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="test.TC_01_TestVerifyUsersCanBuyAnItemSuccessfully"/>
+            <class name="test.TC_02_TestVerifyUsersCanBuyMultipleItemsSuccessfully"/>
+        </classes>
+    </test>
+
+    <!-- Firefox Node 1 -->
+    <test name="FirefoxTests1">
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="test.TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods"/>
+            <class name="test.TC_04_TestVerifyUsersCanSortItemsByPrice"/>
+        </classes>
+    </test>
+
+    <!-- Chrome Node 2 -->
+    <test name="ChromeTests2">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="test.TC_05_TestVerifyOrdersAppearInOrderHistory"/>
+            <class name="test.TC_06_TestVerifyUsersTryToBuyAnItemWithoutLoggingIn"/>
+        </classes>
+    </test>
+
+    <!-- Firefox Node 2 -->
+    <test name="FirefoxTests2">
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="test.TC_07_TestErrorHandling"/>
+        </classes>
+    </test>
+</suite>

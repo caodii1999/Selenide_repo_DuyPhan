@@ -13,11 +13,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Product {
+public class Order {
 
-  private String name;
-  private String price;
-  private String quantity;
+  private int orderNumber;
+  private String orderDate;
+  private double totalPrice;
 
+  public Order(int orderNumber, String orderDate) {
+    this.orderNumber = orderNumber;
+    this.orderDate = orderDate;
+  }
 
 }

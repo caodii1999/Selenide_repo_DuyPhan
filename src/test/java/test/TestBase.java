@@ -1,61 +1,68 @@
 package test;
 
-import static com.codeborne.selenide.Selenide.open;
-
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import config.EnvConfig;
-import factory.UserFactory;
 import helper.DriverUtils;
 import lombok.extern.slf4j.Slf4j;
-import model.User;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.*;
+
+import static com.codeborne.selenide.Selenide.open;
 
 @Slf4j
 public class TestBase {
 
-  protected EnvConfig config;
-  protected User defaultUser;
+    @BeforeSuite(alwaysRun = true)
+    public void globalSetup() {
+        EnvConfig config = new EnvConfig();
 
-  @BeforeSuite
-  public void globalSetup() {
-    config = new EnvConfig();
-    defaultUser = UserFactory.createDefaultUser(config);
+        if (config.getRemoteUrl() != null && !config.getRemoteUrl().isEmpty()) {
+            Configuration.remote = config.getRemoteUrl();
+        } else {
+            Configuration.remote = null;
+        }
 
-    Configuration.browser = config.getBrowser();
-    Configuration.baseUrl = config.getBaseUrl();
-    Configuration.timeout = 10000; // 10 seconds
-    Configuration.pageLoadTimeout = 30000; // 30 seconds
+        log.info("Selenium Grid Hub URL: {}", Configuration.remote);
 
-    log.info("Test suite initialized with browser: {} and base URL: {}",
-        config.getBrowser(), config.getBaseUrl());
-  }
-
-  @BeforeMethod
-  public void setup() {
-    try {
-      open(config.getBaseUrl());
-
-      WebDriverRunner.getWebDriver().manage().window().maximize();
-
-      DriverUtils.disableAds();
-      DriverUtils.hidePopup();
-      DriverUtils.dismissCookieBanner();
-
-      log.info("Test setup completed successfully");
-
-    } catch (Exception e) {
-      log.error("Failed to setup test: {}", e.getMessage(), e);
-      throw new RuntimeException("Test setup failed", e);
+        Configuration.timeout = 15000;
+        Configuration.pollingInterval = 250;
+        Configuration.pageLoadTimeout = 90000;
     }
-  }
 
-  @AfterMethod
-  public void tearDown() {
-    Selenide.clearBrowserCookies();
-    Selenide.closeWebDriver();
-  }
+    @BeforeMethod(alwaysRun = true)
+    @Parameters({"browser"})
+    public void setup(@Optional String browser) {
+        EnvConfig config = new EnvConfig();
+
+        Configuration.browser = config.getBrowser();
+
+        if (browser != null && !browser.isBlank()) {
+            Configuration.browser = browser;
+            Configuration.remoteConnectionTimeout = 60_000;
+            Configuration.remoteReadTimeout = 180_000;
+        }
+
+        if (Configuration.browser == null || Configuration.browser.isBlank()) {
+            Configuration.browser = "chrome";
+        }
+
+        open(config.getBaseUrl());
+
+        log.info("Opening browser: {}", Configuration.browser);
+        log.info("Remote URL: {}", Configuration.remote);
+        WebDriverRunner.getWebDriver()
+                .manage().timeouts()
+                .scriptTimeout(java.time.Duration.ofSeconds(30));
+        DriverUtils.disableAds();
+        DriverUtils.hidePopup();
+        DriverUtils.dismissCookieBanner();
+    }
+
+
+    @AfterMethod(alwaysRun = true)
+    public void tearDown() {
+        Selenide.clearBrowserCookies();
+        Selenide.closeWebDriver();
+    }
 }

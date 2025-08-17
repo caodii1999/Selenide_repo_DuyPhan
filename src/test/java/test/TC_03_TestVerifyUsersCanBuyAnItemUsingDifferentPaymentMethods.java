@@ -1,7 +1,6 @@
 package test;
 
-import static com.codeborne.selenide.Selenide.refresh;
-
+import com.codeborne.selenide.Selenide;
 import dataprovider.UserDataProvider;
 import enums.Pages;
 import enums.PaymentMethod;
@@ -10,115 +9,122 @@ import lombok.extern.slf4j.Slf4j;
 import model.User;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import pages.CheckoutPage;
-import pages.HomePage;
-import pages.MyAccountPage;
-import pages.OrderStatusPage;
-import pages.ProductDetailsPage;
-import pages.ProductsPage;
-import pages.ShoppingCartPage;
+import pages.*;
 
 @Slf4j
 @Test(dataProvider = "userData", dataProviderClass = UserDataProvider.class)
 public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods extends TestBase {
 
-  SoftAssert softAssert = new SoftAssert();
-  MyAccountPage myAccountPage = new MyAccountPage();
-  HomePage homePage = new HomePage();
-  ProductsPage productsPage = new ProductsPage();
-  ProductDetailsPage productDetailsPage = new ProductDetailsPage();
-  ShoppingCartPage shoppingCartPage = new ShoppingCartPage();
-  CheckoutPage checkoutPage = new CheckoutPage();
-  OrderStatusPage orderStatusPage = new OrderStatusPage();
 
-  public void TestBankTransferPaymentMethod(User user) {
-    homePage.clickOnMyAccountButton();
+    MyAccountPage myAccountPage = new MyAccountPage();
+    HomePage homePage = new HomePage();
+    ProductsPage productsPage = new ProductsPage();
+    ProductDetailsPage productDetailsPage = new ProductDetailsPage();
+    ShoppingCartPage shoppingCartPage = new ShoppingCartPage();
+    CheckoutPage checkoutPage = new CheckoutPage();
+    OrderStatusPage orderStatusPage = new OrderStatusPage();
 
-    myAccountPage.login(defaultUser);
+    public void TestBankTransferPaymentMethod(User user) {
 
-    myAccountPage.navigateToShopPage();
+        SoftAssert softAssert = new SoftAssert();
 
-    productsPage.selectRandomItem();
-    productDetailsPage.ClickOnAddToCartBtn();
-    productDetailsPage.clickOnMyCartButton();
+        homePage.clickOnMyAccountButton();
 
-    shoppingCartPage.clickCheckoutBtn();
+        myAccountPage.login();
 
-    checkoutPage.choosePaymentMethod(PaymentMethod.DIRECT_BANK_TRANSFER.getMethod());
+        myAccountPage.navigateToShopPage();
 
-    checkoutPage.fillBillingInfo(user);
-    checkoutPage.clickOnPlaceOrderBtn();
+        productsPage.selectRandomItem();
 
-    softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
-        "order status page is displayed");
-    softAssert.assertTrue(orderStatusPage.isConfirmationMsgDisplayed(),
-        "confirmation message is displayed");
+        productDetailsPage.clickOnAddToCartBtn();
 
-    softAssert.assertEquals(PaymentMethod.DIRECT_BANK_TRANSFER.getMethod(),
-        orderStatusPage.getPaymentMethod());
+        productDetailsPage.clickOnMyCartButton();
 
-    softAssert.assertAll();
-  }
+        Selenide.refresh(); //need to refresh due to page does not update product to cart at first
 
-  public void TestCHECKPaymentMethod(User user) {
-    homePage.clickOnMyAccountButton();
+        shoppingCartPage.clickCheckoutBtn();
 
-    myAccountPage.login(defaultUser);
+        checkoutPage.choosePaymentMethod(PaymentMethod.DIRECT_BANK_TRANSFER.getMethod());
 
-    myAccountPage.navigateToShopPage();
+        checkoutPage.fillBillingInfo(user);
 
-    productsPage.selectRandomItem();
-    productDetailsPage.ClickOnAddToCartBtn();
-    productDetailsPage.clickOnMyCartButton();
+        softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
+                "order status page is displayed");
+        softAssert.assertTrue(orderStatusPage.isConfirmationMsgDisplayed(),
+                "confirmation message is displayed");
 
-    shoppingCartPage.clickCheckoutBtn();
+        softAssert.assertEquals(PaymentMethod.DIRECT_BANK_TRANSFER.getMethod(),
+                orderStatusPage.getPaymentMethod());
 
-    checkoutPage.choosePaymentMethod(PaymentMethod.CHECK_PAYMENTS.getMethod());
+        softAssert.assertAll();
+    }
 
-    checkoutPage.fillBillingInfo(user);
-    checkoutPage.clickOnPlaceOrderBtn();
+    public void TestCHECKPaymentMethod(User user) {
 
-    softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
-        "order status page is displayed");
-    softAssert.assertTrue(orderStatusPage.isConfirmationMsgDisplayed(),
-        "confirmation message is displayed");
+        SoftAssert softAssert = new SoftAssert();
 
-    softAssert.assertEquals(PaymentMethod.CHECK_PAYMENTS.getMethod(),
-        orderStatusPage.getPaymentMethod());
+        homePage.clickOnMyAccountButton();
 
-    softAssert.assertAll();
-  }
+        myAccountPage.login();
 
-  public void TestCODPaymentMethod(User user) {
-    homePage.clickOnMyAccountButton();
+        myAccountPage.navigateToShopPage();
 
-    myAccountPage.login(defaultUser);
+        productsPage.selectRandomItem();
 
-    myAccountPage.navigateToShopPage();
+        productDetailsPage.clickOnAddToCartBtn();
 
-    productsPage.selectRandomItem();
+        productDetailsPage.clickOnMyCartButton();
 
-    productDetailsPage.ClickOnAddToCartBtn();
+        Selenide.refresh(); //need to refresh due to page does not update product to cart at first
 
-    productDetailsPage.clickOnMyCartButton();
+        shoppingCartPage.clickCheckoutBtn();
 
-    refresh(); //need to refresh due to page does not update product to cart at first
+        checkoutPage.choosePaymentMethod(PaymentMethod.CHECK_PAYMENTS.getMethod());
 
-    shoppingCartPage.clickCheckoutBtn();
+        checkoutPage.fillBillingInfo(user);
 
-    checkoutPage.choosePaymentMethod(PaymentMethod.COD.getMethod());
+        softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
+                "order status page is displayed");
+        softAssert.assertTrue(orderStatusPage.isConfirmationMsgDisplayed(),
+                "confirmation message is displayed");
 
-    checkoutPage.fillBillingInfo(user);
+        softAssert.assertEquals(PaymentMethod.CHECK_PAYMENTS.getMethod(),
+                orderStatusPage.getPaymentMethod());
 
-    checkoutPage.clickOnPlaceOrderBtn();
+        softAssert.assertAll();
+    }
 
-    softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
-        "order status page is displayed");
-    softAssert.assertTrue(orderStatusPage.isConfirmationMsgDisplayed(),
-        "confirmation message is displayed");
+    public void TestCODPaymentMethod(User user) {
 
-    softAssert.assertEquals(PaymentMethod.COD.getMethod(), orderStatusPage.getPaymentMethod());
+        SoftAssert softAssert = new SoftAssert();
 
-    softAssert.assertAll();
-  }
+        homePage.clickOnMyAccountButton();
+
+        myAccountPage.login();
+
+        myAccountPage.navigateToShopPage();
+
+        productsPage.selectRandomItem();
+
+        productDetailsPage.clickOnAddToCartBtn();
+
+        productDetailsPage.clickOnMyCartButton();
+
+        Selenide.refresh(); //need to refresh due to page does not update product to cart at first
+
+        shoppingCartPage.clickCheckoutBtn();
+
+        checkoutPage.choosePaymentMethod(PaymentMethod.COD.getMethod());
+
+        checkoutPage.fillBillingInfo(user);
+
+        softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
+                "order status page is displayed");
+        softAssert.assertTrue(orderStatusPage.isConfirmationMsgDisplayed(),
+                "confirmation message is displayed");
+
+        softAssert.assertEquals(PaymentMethod.COD.getMethod(), orderStatusPage.getPaymentMethod());
+
+        softAssert.assertAll();
+    }
 }
