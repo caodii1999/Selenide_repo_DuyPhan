@@ -33,7 +33,7 @@ public class TC_02_TestVerifyUsersCanBuyMultipleItemsSuccessfully extends TestBa
 
         homePage.clickOnMyAccountButton();
 
-        myAccountPage.login(User.defaultUser());
+        myAccountPage.login();
 
         myAccountPage.navigateToShopPage();
 
@@ -43,7 +43,7 @@ public class TC_02_TestVerifyUsersCanBuyMultipleItemsSuccessfully extends TestBa
 
         Selenide.refresh(); //need to refresh due to page does not update product to cart at first
 
-        actualProductsInfo = shoppingCartPage.getAllProductsInCart(); // here
+        actualProductsInfo = shoppingCartPage.getAllProductsInCart();
 
         softAssert.assertEquals(actualProductsInfo, expectedProductsInfo, "step 5");
 
@@ -51,12 +51,12 @@ public class TC_02_TestVerifyUsersCanBuyMultipleItemsSuccessfully extends TestBa
 
         checkoutPage.fillBillingInfo(user);
 
-        checkoutPage.clickOnPlaceOrderBtn();
-
         softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
                 "order status page is displayed");
 
         softAssert.assertTrue(orderStatusPage.isConfirmationMsgDisplayed());
+
+        Selenide.refresh(); //need to refresh due to page does not update product to cart at first
 
         purchasedProductsNames = orderStatusPage.getMultipleProductsInfo();
 

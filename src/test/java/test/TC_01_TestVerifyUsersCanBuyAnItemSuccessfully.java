@@ -40,7 +40,7 @@ public class TC_01_TestVerifyUsersCanBuyAnItemSuccessfully extends TestBase {
 
         homePage.clickOnMyAccountButton();
 
-        myAccountPage.login(User.defaultUser());
+        myAccountPage.login();
 
         myAccountPage.selectDepartment(Departments.ELECTRONIC_COMPONENT.getType());
 
@@ -56,7 +56,7 @@ public class TC_01_TestVerifyUsersCanBuyAnItemSuccessfully extends TestBase {
 
         detailsProduct = productDetailsPage.getDetailProductInfo();
 
-        productDetailsPage.ClickOnAddToCartBtn();
+        productDetailsPage.clickOnAddToCartBtn();
 
         productDetailsPage.clickOnMyCartButton();
 
@@ -74,8 +74,6 @@ public class TC_01_TestVerifyUsersCanBuyAnItemSuccessfully extends TestBase {
                 "Verify item details in order");
 
         checkoutPage.fillBillingInfo(user);
-
-        checkoutPage.clickOnPlaceOrderBtn();
 
         softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
                 "order status page is displayed");

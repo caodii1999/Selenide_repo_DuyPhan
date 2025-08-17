@@ -28,7 +28,7 @@ public class TC_06_TestVerifyUsersTryToBuyAnItemWithoutLoggingIn extends TestBas
 
         productsPage.selectRandomItem();
 
-        productDetailsPage.ClickOnAddToCartBtn();
+        productDetailsPage.clickOnAddToCartBtn();
 
         productsPage.clickOnMyCartButton();
 
@@ -37,8 +37,6 @@ public class TC_06_TestVerifyUsersTryToBuyAnItemWithoutLoggingIn extends TestBas
         shoppingCartPage.clickCheckoutBtn();
 
         checkoutPage.fillBillingInfo(user);
-
-        checkoutPage.clickOnPlaceOrderBtn();
 
         DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName());
 

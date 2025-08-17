@@ -33,16 +33,15 @@ public class TC_05_TestVerifyOrdersAppearInOrderHistory extends TestBase {
 
     public void TestVerifyOrdersAppearInOrderHistory(User user) {
 
-//  Precondition:
         homePage.clickOnMyAccountButton();
-        myAccountPage.login(User.defaultUser());
 
-//  create first order
+        myAccountPage.login();
+
         myAccountPage.navigateToShopPage();
 
         productsPage.selectRandomItem();
 
-        productDetailsPage.ClickOnAddToCartBtn();
+        productDetailsPage.clickOnAddToCartBtn();
 
         productDetailsPage.clickOnMyCartButton();
 
@@ -52,16 +51,13 @@ public class TC_05_TestVerifyOrdersAppearInOrderHistory extends TestBase {
 
         checkoutPage.fillBillingInfo(user);
 
-        checkoutPage.clickOnPlaceOrderBtn();
-
         expectedFirstOrder = orderStatusPage.getOrderInfo();
 
-//  Create second order
         orderStatusPage.navigateToShopPage();
 
         productsPage.selectRandomItem();
 
-        productDetailsPage.ClickOnAddToCartBtn();
+        productDetailsPage.clickOnAddToCartBtn();
 
         productDetailsPage.clickOnMyCartButton();
 
@@ -70,21 +66,17 @@ public class TC_05_TestVerifyOrdersAppearInOrderHistory extends TestBase {
         shoppingCartPage.clickCheckoutBtn();
 
         checkoutPage.fillBillingInfo(user);
-
-        checkoutPage.clickOnPlaceOrderBtn();
 
         expectedSecondOrder = orderStatusPage.getOrderInfo();
 
         expectedOrderList = Arrays.asList(expectedSecondOrder, expectedFirstOrder);
 
-//  1. Go to My Account page
         orderStatusPage.clickOnMyAccountButton();
 
-        myAccountPage.ClickOnOrdersBtn();
+        myAccountPage.clickOnOrdersBtn();
 
         actualOrderList = myAccountPage.getMultipleOrdersInfos(2);
 
-//  Expected result: The orders are displayed in the user’s order history
         softAssert.assertEquals(actualOrderList, expectedOrderList);
 
         softAssert.assertAll();

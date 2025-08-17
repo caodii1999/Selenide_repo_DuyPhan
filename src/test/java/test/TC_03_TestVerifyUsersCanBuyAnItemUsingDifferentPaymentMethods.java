@@ -27,13 +27,13 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
     public void TestBankTransferPaymentMethod(User user) {
         homePage.clickOnMyAccountButton();
 
-        myAccountPage.login(User.defaultUser());
+        myAccountPage.login();
 
         myAccountPage.navigateToShopPage();
 
         productsPage.selectRandomItem();
 
-        productDetailsPage.ClickOnAddToCartBtn();
+        productDetailsPage.clickOnAddToCartBtn();
 
         productDetailsPage.clickOnMyCartButton();
 
@@ -44,7 +44,6 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
         checkoutPage.choosePaymentMethod(PaymentMethod.DIRECT_BANK_TRANSFER.getMethod());
 
         checkoutPage.fillBillingInfo(user);
-        checkoutPage.clickOnPlaceOrderBtn();
 
         softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
                 "order status page is displayed");
@@ -60,13 +59,13 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
     public void TestCHECKPaymentMethod(User user) {
         homePage.clickOnMyAccountButton();
 
-        myAccountPage.login(User.defaultUser());
+        myAccountPage.login();
 
         myAccountPage.navigateToShopPage();
 
         productsPage.selectRandomItem();
 
-        productDetailsPage.ClickOnAddToCartBtn();
+        productDetailsPage.clickOnAddToCartBtn();
 
         productDetailsPage.clickOnMyCartButton();
 
@@ -77,7 +76,6 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
         checkoutPage.choosePaymentMethod(PaymentMethod.CHECK_PAYMENTS.getMethod());
 
         checkoutPage.fillBillingInfo(user);
-        checkoutPage.clickOnPlaceOrderBtn();
 
         softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
                 "order status page is displayed");
@@ -93,13 +91,13 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
     public void TestCODPaymentMethod(User user) {
         homePage.clickOnMyAccountButton();
 
-        myAccountPage.login(User.defaultUser());
+        myAccountPage.login();
 
         myAccountPage.navigateToShopPage();
 
         productsPage.selectRandomItem();
 
-        productDetailsPage.ClickOnAddToCartBtn();
+        productDetailsPage.clickOnAddToCartBtn();
 
         productDetailsPage.clickOnMyCartButton();
 
@@ -110,8 +108,6 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
         checkoutPage.choosePaymentMethod(PaymentMethod.COD.getMethod());
 
         checkoutPage.fillBillingInfo(user);
-
-        checkoutPage.clickOnPlaceOrderBtn();
 
         softAssert.assertTrue(DriverUtils.isPageDisplayed(Pages.ORDER_STATUS.getPageName()),
                 "order status page is displayed");

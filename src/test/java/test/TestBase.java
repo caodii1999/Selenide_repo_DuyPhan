@@ -2,6 +2,7 @@ package test;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.WebDriverRunner;
 import config.EnvConfig;
 import helper.DriverUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -22,28 +23,31 @@ public class TestBase {
             Configuration.remote = null;
         }
 
-        Configuration.browser = config.getBrowser();
-        Configuration.timeout = 10000;
-        Configuration.pageLoadTimeout = 30000;
-        Configuration.reportsFolder = "target/reports";
+        Configuration.timeout = 15000;
+        Configuration.pollingInterval = 250;
+        Configuration.pageLoadTimeout = 90000;
 
         log.info("Selenium Grid Hub URL: {}", Configuration.remote);
-        log.info("Running tests on browser: {}", Configuration.browser);
     }
 
     @BeforeMethod(alwaysRun = true)
     @Parameters({"browser"})
     public void setup(@Optional String browser) {
-
+        EnvConfig config = new EnvConfig();
         if (browser != null && !browser.isEmpty()) {
             Configuration.browser = browser;
+            Configuration.remoteConnectionTimeout = 60000;
+            Configuration.remoteReadTimeout = 180000;
         }
+        Configuration.browser = config.getBrowser();
 
         open(new EnvConfig().getBaseUrl());
 
         log.info("Opening browser: {}", Configuration.browser);
         log.info("Remote URL: {}", Configuration.remote);
-
+        WebDriverRunner.getWebDriver()
+                .manage().timeouts()
+                .scriptTimeout(java.time.Duration.ofSeconds(30));
         DriverUtils.disableAds();
         DriverUtils.hidePopup();
         DriverUtils.dismissCookieBanner();

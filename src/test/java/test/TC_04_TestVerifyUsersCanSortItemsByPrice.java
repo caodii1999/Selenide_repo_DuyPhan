@@ -1,7 +1,6 @@
 package test;
 
 import lombok.extern.slf4j.Slf4j;
-import model.User;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pages.HomePage;
@@ -24,7 +23,7 @@ public class TC_04_TestVerifyUsersCanSortItemsByPrice extends TestBase {
     public void TestSortItemsByPriceLowToHigh() {
         homePage.clickOnMyAccountButton();
 
-        myAccountPage.login(User.defaultUser());
+        myAccountPage.login();
 
         myAccountPage.navigateToShopPage();
 
@@ -42,7 +41,7 @@ public class TC_04_TestVerifyUsersCanSortItemsByPrice extends TestBase {
     public void TestSortItemsByPriceHighToLow() {
         homePage.clickOnMyAccountButton();
 
-        myAccountPage.login(User.defaultUser());
+        myAccountPage.login();
 
         myAccountPage.navigateToShopPage();
 

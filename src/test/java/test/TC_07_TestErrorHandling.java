@@ -24,13 +24,13 @@ public class TC_07_TestErrorHandling extends TestBase {
 
         homePage.clickOnMyAccountButton();
 
-        myAccountPage.login(User.defaultUser());
+        myAccountPage.login();
 
         myAccountPage.navigateToShopPage();
 
         productsPage.selectRandomItem();
 
-        productDetailsPage.ClickOnAddToCartBtn();
+        productDetailsPage.clickOnAddToCartBtn();
 
         productDetailsPage.clickOnMyCartButton();
 
@@ -39,8 +39,6 @@ public class TC_07_TestErrorHandling extends TestBase {
         shoppingCartPage.clickCheckoutBtn();
 
         checkoutPage.fillBillingInfo(missingInfoUser);
-
-        checkoutPage.clickOnPlaceOrderBtn();
 
         softAssert.assertTrue(checkoutPage.isErrorMsgMatchMissingField());
 
