@@ -15,7 +15,7 @@ import pages.*;
 @Test(dataProvider = "userData", dataProviderClass = UserDataProvider.class)
 public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods extends TestBase {
 
-    SoftAssert softAssert = new SoftAssert();
+
     MyAccountPage myAccountPage = new MyAccountPage();
     HomePage homePage = new HomePage();
     ProductsPage productsPage = new ProductsPage();
@@ -25,6 +25,9 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
     OrderStatusPage orderStatusPage = new OrderStatusPage();
 
     public void TestBankTransferPaymentMethod(User user) {
+
+        SoftAssert softAssert = new SoftAssert();
+
         homePage.clickOnMyAccountButton();
 
         myAccountPage.login();
@@ -57,6 +60,9 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
     }
 
     public void TestCHECKPaymentMethod(User user) {
+
+        SoftAssert softAssert = new SoftAssert();
+
         homePage.clickOnMyAccountButton();
 
         myAccountPage.login();
@@ -89,6 +95,9 @@ public class TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods exten
     }
 
     public void TestCODPaymentMethod(User user) {
+
+        SoftAssert softAssert = new SoftAssert();
+
         homePage.clickOnMyAccountButton();
 
         myAccountPage.login();

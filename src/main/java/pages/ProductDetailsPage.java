@@ -8,8 +8,7 @@ import org.openqa.selenium.By;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 
 @Slf4j
@@ -19,7 +18,7 @@ public class ProductDetailsPage extends BasePage {
     private final String productNameLocator =
             productInfo + "//h1[@class = 'product_title entry-title']";
     private final SelenideElement productName = $(By.xpath(productNameLocator));
-    private final String addToCartBtnLocator = "//button[@type = 'submit' and contains(text(), 'Add to cart')]";
+    private final String addToCartBtnLocator = "//button[contains(text(), 'Add to cart')]";
     private final String productPriceLocator = "//div[@class='row']//p[@class='price']/ins | //div[@class='row']//p[@class='price']/span/bdi";
     private final String productQuantityLocator = "//div[@class = 'quantity']//input[@class = 'input-text qty text']";
     private final SelenideElement addToCartBtn = $(By.xpath(addToCartBtnLocator));
@@ -55,12 +54,11 @@ public class ProductDetailsPage extends BasePage {
     @Step("click on AddToCart button")
     public void clickOnAddToCartBtn() {
         log.info("Clicking 'Add to Cart' button");
-        if (!isAddedPopupAppear()) {
-            addToCartBtn
-                    .scrollIntoView(false)
-                    .shouldBe(visible, enabled)
-                    .click();
-            log.info("Product added to cart");
-        }
+        addToCartBtn
+                .scrollIntoView(false)
+                .shouldBe(visible, enabled)
+                .click();
+        addToCartBtn.shouldNotHave(cssClass("loading"));
+        log.info("Product added to cart");
     }
 }

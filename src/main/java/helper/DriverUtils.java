@@ -1,24 +1,16 @@
 package helper;
 
-import com.codeborne.selenide.WebDriverRunner;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
-
 import static com.codeborne.selenide.Selenide.executeJavaScript;
+import static com.codeborne.selenide.Selenide.webdriver;
+import static com.codeborne.selenide.WebDriverConditions.urlContaining;
 
 public class DriverUtils {
 
     public static boolean isPageDisplayed(String pageName) {
         try {
-            // Wait until the URL contains the expected text
-            Wait<WebDriver> wait = new WebDriverWait(WebDriverRunner.getWebDriver(), Duration.ofSeconds(10));
-            wait.until(driver -> WebDriverRunner.url().contains(pageName));
+            webdriver().shouldHave(urlContaining(pageName));
             return true;
-        } catch (TimeoutException e) {
+        } catch (AssertionError e) {
             return false;
         }
     }

@@ -32,6 +32,7 @@ public class ShoppingCartPage extends BasePage {
     private final SelenideElement productName = $(By.xpath(productNameLocator));
     private final SelenideElement proceedToCheckoutBtn = $(By.xpath(proceedToCheckoutBtnLocator));
 
+
     @Step("Get product info")
     public Product getSingleProductInfo() {
         log.info("Retrieving single product info from cart");
@@ -88,8 +89,10 @@ public class ShoppingCartPage extends BasePage {
     @Step("click on checkout button")
     public void clickCheckoutBtn() {
         log.info("Clicking on 'Proceed to Checkout' button");
-        proceedToCheckoutBtn.shouldBe(visible, Duration.ofSeconds(2))
-                .scrollIntoView(false)
-                .click();
+        if (isCartNavBarDisplayed()) {
+            proceedToCheckoutBtn.shouldBe(visible, Duration.ofSeconds(2))
+                    .scrollIntoCenter()
+                    .click();
+        }
     }
 }

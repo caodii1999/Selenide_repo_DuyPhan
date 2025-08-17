@@ -15,12 +15,14 @@ public class TC_04_TestVerifyUsersCanSortItemsByPrice extends TestBase {
 
     List<Double> sortedPrice;
 
-    SoftAssert softAssert = new SoftAssert();
     MyAccountPage myAccountPage = new MyAccountPage();
     HomePage homePage = new HomePage();
     ProductsPage productsPage = new ProductsPage();
 
     public void TestSortItemsByPriceLowToHigh() {
+
+        SoftAssert softAssert = new SoftAssert();
+
         homePage.clickOnMyAccountButton();
 
         myAccountPage.login();
@@ -39,6 +41,9 @@ public class TC_04_TestVerifyUsersCanSortItemsByPrice extends TestBase {
     }
 
     public void TestSortItemsByPriceHighToLow() {
+
+        SoftAssert softAssert = new SoftAssert();
+
         homePage.clickOnMyAccountButton();
 
         myAccountPage.login();

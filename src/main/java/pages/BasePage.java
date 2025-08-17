@@ -8,8 +8,7 @@ import org.openqa.selenium.By;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 
 @Slf4j
@@ -17,6 +16,8 @@ public class BasePage {
 
     private static final String productAddedPopupLocator = "//div[@class = 'et-notify pos-fixed top right']";
     private static final SelenideElement productAddedPopup = $(By.xpath(productAddedPopupLocator));
+    private static final String cartNavBarLocator = "//div[@class = 'cart-checkout-nav']";
+    private static final SelenideElement cartNavBar = $(By.xpath(cartNavBarLocator));
     protected final String dynamicNavItemsLocator = "//ul[@id = 'menu-main-menu-1']//li[a[text() = '%s']]";
     protected final String allDepartmentLocator = "//div[@class = 'secondary-menu-wrapper']";
     protected final String dynamicDepartmentLocator = "//div[@class = 'secondary-menu-wrapper']//div[ul[@id = 'menu-all-departments-1']]//li[a[contains(text(), '%s')]]";
@@ -26,8 +27,12 @@ public class BasePage {
     protected final SelenideElement myAccountBtn = $(By.xpath(myAccountBtnLocator));
     protected final SelenideElement myCartBtn = $(By.xpath(myCartBtnLocator));
 
-    public static boolean isAddedPopupAppear() {
+    public static boolean isAddedPopupDisplayed() {
         return productAddedPopup.isDisplayed();
+    }
+
+    public static boolean isCartNavBarDisplayed() {
+        return cartNavBar.isDisplayed();
     }
 
     public void clickOnNavItem(String item) {
@@ -66,13 +71,10 @@ public class BasePage {
     @Step("Click on Cart")
     public void clickOnMyCartButton() {
         log.info("Clicking on Cart button");
-        if (!isAddedPopupAppear()) {
-            myCartBtn.scrollIntoView(false)
-                    .shouldBe(visible, Duration.ofSeconds(10))
-                    .hover()
-                    .shouldBe(enabled, Duration.ofSeconds(10))
-                    .click();
-            log.info("Already clicked on My Cart button");
-        }
+        myCartBtn.scrollIntoCenter()
+                .shouldBe(visible, enabled);
+        productAddedPopup.should(disappear);
+        myCartBtn.click();
+        log.info("Already clicked on My Cart button");
     }
 }

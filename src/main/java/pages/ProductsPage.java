@@ -70,7 +70,7 @@ public class ProductsPage extends BasePage {
                 .shouldBe(enabled, clickable)
                 .scrollIntoView(false)
                 .click();
-        if (isAddedPopupAppear()) {
+        if (isAddedPopupDisplayed()) {
             log.info("waiting for pop up hidden");
         }
         log.info("added item successfully");

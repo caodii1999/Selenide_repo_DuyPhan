@@ -23,25 +23,31 @@ public class TestBase {
             Configuration.remote = null;
         }
 
+        log.info("Selenium Grid Hub URL: {}", Configuration.remote);
+
         Configuration.timeout = 15000;
         Configuration.pollingInterval = 250;
         Configuration.pageLoadTimeout = 90000;
-
-        log.info("Selenium Grid Hub URL: {}", Configuration.remote);
     }
 
     @BeforeMethod(alwaysRun = true)
     @Parameters({"browser"})
     public void setup(@Optional String browser) {
         EnvConfig config = new EnvConfig();
-        if (browser != null && !browser.isEmpty()) {
-            Configuration.browser = browser;
-            Configuration.remoteConnectionTimeout = 60000;
-            Configuration.remoteReadTimeout = 180000;
-        }
+
         Configuration.browser = config.getBrowser();
 
-        open(new EnvConfig().getBaseUrl());
+        if (browser != null && !browser.isBlank()) {
+            Configuration.browser = browser;
+            Configuration.remoteConnectionTimeout = 60_000;
+            Configuration.remoteReadTimeout = 180_000;
+        }
+
+        if (Configuration.browser == null || Configuration.browser.isBlank()) {
+            Configuration.browser = "chrome";
+        }
+
+        open(config.getBaseUrl());
 
         log.info("Opening browser: {}", Configuration.browser);
         log.info("Remote URL: {}", Configuration.remote);
@@ -52,6 +58,7 @@ public class TestBase {
         DriverUtils.hidePopup();
         DriverUtils.dismissCookieBanner();
     }
+
 
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
