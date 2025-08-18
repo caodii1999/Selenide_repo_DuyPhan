@@ -30,5 +30,4 @@ jobs:
         run: mvn clean test
 
       - name: Teardown Grid
-        if: always()
         run: docker compose down -v

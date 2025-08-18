@@ -28,28 +28,20 @@ public class ProductsPage extends BasePage {
 
     private final String multipleItemsLocator = "//div[@class = 'text-center product-details']//h2[@class = 'product-title']";
     private final ElementsCollection multipleItems = $$(By.xpath(multipleItemsLocator));
-
     private final String addToCartBtnLocator = "//div[@class = 'text-center product-details']//h2[@class = 'product-title']//following-sibling::a[text() = 'Add to cart']";
     private final ElementsCollection addToCartBtn = $$(By.xpath(addToCartBtnLocator));
-
     private final String successAddToCartPopupLocator = "//div[@class = 'et-notify pos-fixed top right']";
     private final SelenideElement successAddToCartPopup = $(By.xpath(successAddToCartPopupLocator));
-
     private final String gridViewBtnLocator = "//div[contains(@class, 'switch-grid')]";
     private final String listViewBtnLocator = "//div[contains(@class, 'switch-list')]";
-
     private final SelenideElement gridViewBtn = $(By.xpath(gridViewBtnLocator));
     private final SelenideElement listViewBtn = $(By.xpath(listViewBtnLocator));
-
     private final String sortDropDownLocator = "//select[@class = 'orderby']";
     private final SelenideElement sortDropDown = $(By.xpath(sortDropDownLocator));
-
     private final String productPricesLocator = "//div[@class='text-center product-details']//span[@class='woocommerce-Price-amount amount']/bdi[not(ancestor::del)]";
     private final ElementsCollection productPrices = $$(By.xpath(productPricesLocator));
-
     private final String loadSpinnerLocator = "//div[contains(@class, 'et-loader product-ajax')]";
     private final SelenideElement loadSpinner = $(By.xpath(loadSpinnerLocator));
-
     private final String productAddedPopupLocator = "//div[@class = 'et-notify pos-fixed top right']";
     private final SelenideElement productAddedPopup = $(By.xpath(productAddedPopupLocator));
 
@@ -73,7 +65,6 @@ public class ProductsPage extends BasePage {
         if (isAddedPopupDisplayed()) {
             log.info("waiting for pop up hidden");
         }
-        log.info("added item successfully");
     }
 
     @Step("Add multiple items and get info")
@@ -91,11 +82,18 @@ public class ProductsPage extends BasePage {
                             .shouldBe(visible, Duration.ofSeconds(5))
                             .scrollIntoView(true)
                             .getText()
-                            .toLowerCase();
-                    String price = productPrices.get(i)
-                            .shouldBe(visible, Duration.ofSeconds(5))
-                            .getText().replace("$", "").trim();
-                    String quantity = "1";
+                            .toLowerCase()
+                            .trim();
+
+                    double price = Double.parseDouble(
+                            productPrices.get(i)
+                                    .shouldBe(visible, Duration.ofSeconds(5))
+                                    .getText()
+                                    .replace("$", "")
+                                    .trim()
+                    );
+
+                    int quantity = 1; // since adding one item per click
 
                     addToCartBtn.get(i)
                             .shouldBe(visible, Duration.ofSeconds(5))

@@ -1,11 +1,6 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -14,14 +9,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @Data
 public class Order {
+    private int orderNumber;
+    private String orderDate;
+    private double totalPrice;
 
-  private int orderNumber;
-  private String orderDate;
-  private double totalPrice;
-
-  public Order(int orderNumber, String orderDate) {
-    this.orderNumber = orderNumber;
-    this.orderDate = orderDate;
-  }
+    public Order(int orderNumber, String orderDate) {
+        this.orderNumber = orderNumber;
+        this.orderDate = orderDate;
+    }
 
 }

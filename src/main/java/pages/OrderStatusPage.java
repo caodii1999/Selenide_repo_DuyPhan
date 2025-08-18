@@ -64,6 +64,7 @@ public class OrderStatusPage extends BasePage {
 
     public List<Product> getMultipleProductsInfo() {
         log.info("Retrieving multiple product details from order");
+
         return IntStream.range(0, productsNames.size())
                 .mapToObj(i -> {
                     String name = productsNames.get(i)
@@ -73,17 +74,21 @@ public class OrderStatusPage extends BasePage {
                             .toLowerCase()
                             .trim();
 
-                    String price = productPrice.get(i)
-                            .shouldBe(visible, Duration.ofSeconds(5))
-                            .getText()
-                            .replace("$", "")
-                            .trim();
+                    double price = Double.parseDouble(
+                            productPrice.get(i)
+                                    .shouldBe(visible, Duration.ofSeconds(5))
+                                    .getText()
+                                    .replace("$", "")
+                                    .trim()
+                    );
 
-                    String quantity = productQuantity.get(i)
-                            .shouldBe(visible, Duration.ofSeconds(5))
-                            .getText()
-                            .replace("×", "")
-                            .trim();
+                    int quantity = Integer.parseInt(
+                            productQuantity.get(i)
+                                    .shouldBe(visible, Duration.ofSeconds(5))
+                                    .getText()
+                                    .replace("×", "")
+                                    .trim()
+                    );
 
                     return new Product(name, price, quantity);
                 })

@@ -75,6 +75,7 @@ public class BasePage {
                 .shouldBe(visible, enabled);
         productAddedPopup.should(disappear);
         myCartBtn.click();
+        cartNavBar.shouldBe(appear);
         log.info("Already clicked on My Cart button");
     }
 }

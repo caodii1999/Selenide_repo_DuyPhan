@@ -20,10 +20,8 @@ import static com.codeborne.selenide.Selenide.$;
 @Slf4j
 public class CheckoutPage extends BasePage {
 
-    // ===== Base Locators =====
     private final String productReviewLocator = "//div[@id='order_review']//table//tbody//tr";
 
-    // ===== Product Locators =====
     private final String productNameLocator = productReviewLocator + "//td[@class='product-name']";
     private final SelenideElement productNameAndQuantity = $(By.xpath(productNameLocator));
     private final String productPriceLocator = "//td[@class='product-total']//span//bdi";
@@ -31,8 +29,6 @@ public class CheckoutPage extends BasePage {
     private final SelenideElement productPrice = $(By.xpath(productPriceLocator));
     private final SelenideElement productQuantity = $(By.xpath(productQuantityLocator));
 
-    // ===== Billing Locators =====
-    private final String dynamicBillingInputLocator = "//input[@id='%s']";
     private final String billingCountryDropdownLocator = "//span[@id='select2-billing_country-container']";
     private final String billingCountryLocator = "//input[@class = 'select2-search__field']";
 
@@ -53,15 +49,12 @@ public class CheckoutPage extends BasePage {
     private final SelenideElement billingPhoneNumberInput = $(By.xpath(billingPhoneNumberInputLocator));
     private final SelenideElement billingEmailInput = $(By.xpath(billingEmailInputLocator));
 
-    // ===== Payment Locators =====
     private final String dynamicPaymentMethodsLocator =
             "//div[@id='order_review']//div//ul//li//label[contains(text(), '%s')]";
 
-    // ===== Buttons =====
     private final String placeOrderBtnLocator = "//button[@id='place_order']";
     private final SelenideElement placeOrderBtn = $(By.xpath(placeOrderBtnLocator));
 
-    // ===== Error Messages =====
     private final String errorMsgLocator =
             "//div[@class='woocommerce-NoticeGroup woocommerce-NoticeGroup-checkout']" +
                     "//ul[@class='woocommerce-error']//li[@data-id='%s']";
@@ -69,10 +62,33 @@ public class CheckoutPage extends BasePage {
 
     public Product getProductInfo() {
         log.info("Getting product details from order summary");
-        String fullProductName = productNameAndQuantity.shouldBe(visible, Duration.ofSeconds(5)).getText();
-        String quantity = productQuantity.shouldBe(visible, Duration.ofSeconds(5)).getText().replace("×", "").trim();
-        String name = fullProductName.replace(quantity, "").replace("×", "").toLowerCase().trim();
-        String price = productPrice.shouldBe(visible, Duration.ofSeconds(5)).getText().replace("$", "").trim();
+
+        String fullProductName = productNameAndQuantity
+                .shouldBe(visible, Duration.ofSeconds(5))
+                .getText()
+                .trim();
+
+        String quantityText = productQuantity
+                .shouldBe(visible, Duration.ofSeconds(5))
+                .getText()
+                .replace("×", "")
+                .trim();
+
+        int quantity = Integer.parseInt(quantityText);
+
+        String name = fullProductName
+                .replace(quantityText, "")
+                .replace("×", "")
+                .toLowerCase()
+                .trim();
+
+        double price = Double.parseDouble(
+                productPrice
+                        .shouldBe(visible, Duration.ofSeconds(5))
+                        .getText()
+                        .replace("$", "")
+                        .trim()
+        );
 
         return new Product(name, price, quantity);
     }
@@ -87,7 +103,6 @@ public class CheckoutPage extends BasePage {
         ElementUtils.setValueToInputFields(billingPhoneNumberInput, user.getPhoneNumber());
         ElementUtils.setValueToInputFields(billingEmailInput, user.getEmail());
         ElementUtils.selectValueInDropDown(billingCountryDropdown, billingCountries, user.getCountry());
-
         clickOnPlaceOrderBtn();
     }
 
@@ -120,7 +135,6 @@ public class CheckoutPage extends BasePage {
                 "billing_phone", Constants.BILLING_PHONE_ERROR,
                 "billing_email", Constants.BILLING_EMAIL_ERROR
         );
-
         List<SelenideElement> fields = List.of(
                 billingFirstNameInput,
                 billingLastNameInput,
@@ -129,7 +143,6 @@ public class CheckoutPage extends BasePage {
                 billingPhoneNumberInput,
                 billingEmailInput
         );
-
         for (SelenideElement field : fields) {
             if (field.shouldBe(visible, Duration.ofSeconds(5)).getValue().isBlank()) {
                 String id = field.getAttribute("id").trim();
