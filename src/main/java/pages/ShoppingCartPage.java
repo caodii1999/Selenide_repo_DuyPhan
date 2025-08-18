@@ -55,25 +55,27 @@ public class ShoppingCartPage extends BasePage {
         String name = getProductName();
         double price = getProductPrice();
         int quantity = getProductQuantity();
+        log.info("Cart product -> name='{}', price={}, qty={}", name, price, quantity);
         return new Product(name, price, quantity);
     }
 
     @Step("Get product name")
     public String getProductName() {
-        return productName
+        String name = productName
                 .shouldBe(visible, Duration.ofSeconds(5))
                 .scrollIntoView(false)
                 .getText()
                 .toLowerCase()
                 .trim();
+        log.info("Product name: {}", name);
+        return name;
     }
 
     @Step("Get product unit price")
     public double getProductPrice() {
         loadingSpinner.shouldBe(disappear);
-        return Double.parseDouble(
-                productPrice
-                        .shouldBe(visible, Duration.ofSeconds(5))
+        double price = Double.parseDouble(
+                productPrice.shouldBe(visible, Duration.ofSeconds(5))
                         .scrollIntoView(false)
                         .getText()
                         .replace('\u00A0', ' ')
@@ -82,26 +84,29 @@ public class ShoppingCartPage extends BasePage {
                         .replaceAll("[^0-9.\\-]", "")
                         .trim()
         );
+        log.info("Unit price: {}", price);
+        return price;
     }
 
     @Step("Get product quantity")
     public int getProductQuantity() {
         loadingSpinner.shouldBe(disappear);
-        return Integer.parseInt(
-                productQuantity
-                        .shouldBe(visible, Duration.ofSeconds(5))
+        int qty = Integer.parseInt(
+                productQuantity.shouldBe(visible, Duration.ofSeconds(5))
                         .scrollIntoView(false)
                         .getValue()
                         .replaceAll("[^0-9]", "")
                         .trim()
         );
+        log.info("Quantity: {}", qty);
+        return qty;
     }
 
+    @Step("Get product subtotal")
     public double getSubTotal() {
         loadingSpinner.shouldBe(disappear);
-        return Double.parseDouble(
-                productSubTotal
-                        .shouldBe(visible, Duration.ofSeconds(5))
+        double sub = Double.parseDouble(
+                productSubTotal.shouldBe(visible, Duration.ofSeconds(5))
                         .scrollIntoView(false)
                         .getText()
                         .replace('\u00A0', ' ')
@@ -110,27 +115,30 @@ public class ShoppingCartPage extends BasePage {
                         .replaceAll("[^0-9.\\-]", "")
                         .trim()
         );
+        log.info("Subtotal: {}", sub);
+        return sub;
     }
 
     @Step("Get expected qty & subtotal after clicking '+' {numberOfClick} time(s)")
     public Product getProductQtyAndSubAfterPlus(int numberOfClick) {
         double price = getProductPrice();
         int beforeQty = getProductQuantity();
-        int afterQty;
-        double afterTotal;
+        log.info("PLUS start: clicks={}, beforeQty={}, price={}", numberOfClick, beforeQty, price);
 
+        int afterQty;
         if (numberOfClick == 1) {
             clickOnPlusBtn();
-            afterQty = beforeQty + numberOfClick;
+            afterQty = beforeQty + 1;
         } else {
             setValueToQtyTextBox(numberOfClick);
             afterQty = numberOfClick;
         }
 
-        afterTotal = price * afterQty;
         loadingSpinner.shouldBe(disappear);
         productQuantity.shouldHave(Condition.value(String.valueOf(afterQty)), Duration.ofSeconds(5));
 
+        double afterTotal = price * afterQty;
+        log.info("PLUS done: afterQty={}, expectedSubtotal={}", afterQty, afterTotal);
         return new Product(afterQty, afterTotal);
     }
 
@@ -138,29 +146,29 @@ public class ShoppingCartPage extends BasePage {
     public Product getProductQtyAndSubAfterMinus(int numberOfClick) {
         double price = getProductPrice();
         int beforeQty = getProductQuantity();
-        int afterQty;
-        double afterTotal;
+        log.info("MINUS start: clicks={}, beforeQty={}, price={}", numberOfClick, beforeQty, price);
 
+        int afterQty;
         if (numberOfClick == 1) {
             clickOnMinusBtn();
-            afterQty = Math.max(1, beforeQty - numberOfClick);
+            afterQty = Math.max(1, beforeQty - 1);
         } else {
             setValueToQtyTextBox(numberOfClick);
-            afterQty = numberOfClick;
+            afterQty = numberOfClick; // assumes absolute set; change if you intend decrement
         }
 
-        afterTotal = price * afterQty;
         loadingSpinner.shouldBe(disappear);
         productQuantity.shouldHave(Condition.value(String.valueOf(afterQty)), Duration.ofSeconds(5));
 
+        double afterTotal = price * afterQty;
+        log.info("MINUS done: afterQty={}, expectedSubtotal={}", afterQty, afterTotal);
         return new Product(afterQty, afterTotal);
     }
 
     @Step("Get all products (name, price, quantity) in cart")
     public List<Product> getAllProductsInCart() {
-        log.info("Retrieving all products in cart");
-
-        return IntStream.range(0, productsNames.size())
+        log.info("Reading all products in cart…");
+        List<Product> items = IntStream.range(0, productsNames.size())
                 .mapToObj(i -> {
                     String name = productsNames.get(i)
                             .shouldBe(visible, Duration.ofSeconds(5))
@@ -178,7 +186,7 @@ public class ShoppingCartPage extends BasePage {
                                     .trim()
                     );
 
-                    int quantity = Integer.parseInt(
+                    int qty = Integer.parseInt(
                             productQuantities.get(i)
                                     .shouldBe(visible, Duration.ofSeconds(5))
                                     .scrollIntoView(false)
@@ -186,53 +194,70 @@ public class ShoppingCartPage extends BasePage {
                                     .trim()
                     );
 
-                    log.info("Product found - Name: {}, Price: {}, Quantity: {}", name, price, quantity);
-                    return new Product(name, price, quantity);
+                    log.info("Item {} -> name='{}', price={}, qty={}", i, name, price, qty);
+                    return new Product(name, price, qty);
                 })
                 .collect(Collectors.toList());
+        log.info("Total items read: {}", items.size());
+        return items;
     }
 
-    @Step("click on Clear cart")
+    @Step("Click on Clear cart")
     public void clearShoppingCart() {
+        log.info("Clearing shopping cart…");
         clearCart.scrollIntoView(false).click();
         switchTo().alert().accept();
+        log.info("Clear cart confirmed.");
     }
 
+    @Step("Get empty cart message")
     public String getEmptyCartMsg() {
-        return emptyCartMsg.shouldBe(visible).getText();
+        String msg = emptyCartMsg.shouldBe(visible).getText();
+        log.info("Empty cart message: {}", msg);
+        return msg;
     }
 
+    @Step("Is cart empty?")
     public boolean isCartEmpty() {
-        return cartContent.isDisplayed();
+        boolean displayed = cartContent.isDisplayed();
+        log.info("Cart content displayed: {}", displayed);
+        return displayed;
     }
 
-    @Step("click on checkout button")
+    @Step("Click on checkout button")
     public void clickCheckoutBtn() {
-        log.info("Clicking on 'Proceed to Checkout' button");
+        log.info("Attempting to proceed to checkout…");
         if (isCartNavBarDisplayed()) {
             proceedToCheckoutBtn.shouldBe(visible, Duration.ofSeconds(2))
                     .scrollIntoCenter()
                     .click();
+            log.info("Clicked 'Proceed to Checkout'.");
+        } else {
+            log.info("Checkout button not available (cart navbar hidden).");
         }
     }
 
     @Step("Click on plus button")
     public void clickOnPlusBtn() {
+        log.info("Click '+'");
         plusBtn.shouldBe(enabled).click();
         loadingSpinner.shouldBe(appear);
     }
 
     @Step("Click on minus button")
     public void clickOnMinusBtn() {
+        log.info("Click '-'");
         minusBtn.shouldBe(enabled).click();
-        loadingSpinner.should(appear);
+        loadingSpinner.shouldBe(appear);
     }
 
     @Step("Set value to Qty textbox")
     public void setValueToQtyTextBox(int num) {
+        log.info("Set qty to {} and update cart", num);
         loadingSpinner.shouldBe(disappear);
         quantityInput.shouldBe(enabled).setValue(String.valueOf(num));
         updateCartBtn.shouldBe(enabled).click();
         loadingSpinner.shouldBe(appear);
     }
+
 }

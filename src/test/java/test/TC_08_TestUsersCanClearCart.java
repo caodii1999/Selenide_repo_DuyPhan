@@ -25,7 +25,7 @@ public class TC_08_TestUsersCanClearCart extends TestBase {
     List<Product> expectedProductsNames;
     List<Product> actualProductsNames;
 
-    public void precondition() {
+    public void TestUsersCanClearCart() {
 
         homePage.clickOnMyAccountButton();
 
@@ -38,15 +38,6 @@ public class TC_08_TestUsersCanClearCart extends TestBase {
         productsPage.clickOnMyCartButton();
 
         actualProductsNames = shoppingCartPage.getAllProductsInCart();
-    }
-
-    public void TestUsersCanClearCart() {
-
-        homePage.clickOnMyAccountButton();
-
-        myAccountPage.login();
-
-        myAccountPage.clickOnMyCartButton();
 
         softAssert.assertEquals(actualProductsNames, expectedProductsNames,
                 "Verify items show in table");

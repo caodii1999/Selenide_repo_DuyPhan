@@ -28,8 +28,4 @@ public class DriverUtils {
     public static void dismissCookieBanner() {
         executeJavaScript("document.getElementById('cn-accept-cookie')?.click();");
     }
-
-    public static void scrollToTop() {
-        executeJavaScript("window.scrollTo(0, 0);");
-    }
 }

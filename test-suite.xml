@@ -1,38 +1,28 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="SelenideSuite">
+<suite name="SelenideSuite" parallel="tests" thread-count="2">
     <listeners>
         <listener class-name="report.AllureListener"/>
     </listeners>
 
-    <test name="ChromeTests1">
+    <!-- Node 1: Chrome -->
+    <test name="ChromeTests">
         <parameter name="browser" value="chrome"/>
         <classes>
             <class name="test.TC_01_TestVerifyUsersCanBuyAnItemSuccessfully"/>
             <class name="test.TC_02_TestVerifyUsersCanBuyMultipleItemsSuccessfully"/>
-            <class name="test.TC_09_TestUpdateQuantityOfProductInCart"/>
-        </classes>
-    </test>
-
-    <test name="FirefoxTests1">
-        <parameter name="browser" value="firefox"/>
-        <classes>
-            <class name="test.TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods"/>
-            <class name="test.TC_04_TestVerifyUsersCanSortItemsByPrice"/>
-        </classes>
-    </test>
-
-    <test name="ChromeTests2">
-        <parameter name="browser" value="chrome"/>
-        <classes>
             <class name="test.TC_05_TestVerifyOrdersAppearInOrderHistory"/>
             <class name="test.TC_06_TestVerifyUsersTryToBuyAnItemWithoutLoggingIn"/>
+            <class name="test.TC_09_TestUpdateQuantityOfProductInCart"/>
             <class name="test.TC_10_TestUsersCanPostAReview"/>
         </classes>
     </test>
 
-    <test name="FirefoxTests2">
+    <!-- Node 2: Firefox -->
+    <test name="FirefoxTests">
         <parameter name="browser" value="firefox"/>
         <classes>
+            <class name="test.TC_03_TestVerifyUsersCanBuyAnItemUsingDifferentPaymentMethods"/>
+            <class name="test.TC_04_TestVerifyUsersCanSortItemsByPrice"/>
             <class name="test.TC_07_TestErrorHandling"/>
             <class name="test.TC_08_TestUsersCanClearCart"/>
         </classes>

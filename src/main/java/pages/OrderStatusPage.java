@@ -95,7 +95,6 @@ public class OrderStatusPage extends BasePage {
                 .collect(Collectors.toList());
     }
 
-
     public Billing getBillingInfo() {
         log.info("Retrieving billing information from order summary");
         String[] parts = billingAddress.shouldBe(visible, Duration.ofSeconds(5))

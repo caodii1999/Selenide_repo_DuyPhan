@@ -1,11 +1,6 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -14,12 +9,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Billing {
-
-  private String fullName;
-  private String address;
-  private String city;
-  private String country;
-  private String phoneNumber;
-  private String email;
+    private String fullName;
+    private String address;
+    private String city;
+    private String country;
+    private String phoneNumber;
+    private String email;
 
 }

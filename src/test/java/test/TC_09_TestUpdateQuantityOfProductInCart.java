@@ -22,8 +22,8 @@ public class TC_09_TestUpdateQuantityOfProductInCart extends TestBase {
 
     Product expectedProductAfterPlus;
     Product actualProductAfterPlus;
-    Product expectProductAfterAdding4;
-    Product actualProductAfterAdding4;
+    Product expectProductAfterAddingByNumber;
+    Product actualProductAfterAddingByNumber;
     Product expectedProductAfterMinus;
     Product actualProductAfterMinus;
 
@@ -43,7 +43,7 @@ public class TC_09_TestUpdateQuantityOfProductInCart extends TestBase {
 
         productsPage.clickOnMyCartButton();
 
-        refresh(); // Need refresh
+        refresh(); // need to refresh due to page does not update product to cart at first
 
         actualProductQuantity = shoppingCartPage.getProductQuantity();
 
@@ -56,11 +56,11 @@ public class TC_09_TestUpdateQuantityOfProductInCart extends TestBase {
 
         softAssert.assertEquals(actualProductAfterPlus, expectedProductAfterPlus);
 
-        expectProductAfterAdding4 = shoppingCartPage.getProductQtyAndSubAfterPlus(4);
+        expectProductAfterAddingByNumber = shoppingCartPage.getProductQtyAndSubAfterPlus(4);
 
-        actualProductAfterAdding4 = new Product(shoppingCartPage.getProductQuantity(), shoppingCartPage.getSubTotal());
+        actualProductAfterAddingByNumber = new Product(shoppingCartPage.getProductQuantity(), shoppingCartPage.getSubTotal());
 
-        softAssert.assertEquals(expectProductAfterAdding4, actualProductAfterAdding4);
+        softAssert.assertEquals(expectProductAfterAddingByNumber, actualProductAfterAddingByNumber);
 
         expectedProductAfterMinus = shoppingCartPage.getProductQtyAndSubAfterMinus(1);
 
