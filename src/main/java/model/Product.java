@@ -1,11 +1,6 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -15,9 +10,19 @@ import lombok.Setter;
 @Data
 public class Product {
 
-  private String name;
-  private String price;
-  private String quantity;
+    private String name;
+    private double price;
+    private int quantity;
+    private double subTotal;
 
+    public Product(String name, double price, int quantity) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
 
+    public Product(int qty, double subTotal) {
+        this.quantity = qty;
+        this.subTotal = subTotal;
+    }
 }

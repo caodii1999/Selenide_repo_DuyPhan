@@ -69,13 +69,37 @@ public class CheckoutPage extends BasePage {
 
     public Product getProductInfo() {
         log.info("Getting product details from order summary");
-        String fullProductName = productNameAndQuantity.shouldBe(visible, Duration.ofSeconds(5)).getText();
-        String quantity = productQuantity.shouldBe(visible, Duration.ofSeconds(5)).getText().replace("×", "").trim();
-        String name = fullProductName.replace(quantity, "").replace("×", "").toLowerCase().trim();
-        String price = productPrice.shouldBe(visible, Duration.ofSeconds(5)).getText().replace("$", "").trim();
+
+        String fullProductName = productNameAndQuantity
+                .shouldBe(visible, Duration.ofSeconds(5))
+                .getText()
+                .trim();
+
+        String quantityText = productQuantity
+                .shouldBe(visible, Duration.ofSeconds(5))
+                .getText()
+                .replace("×", "")
+                .trim();
+
+        int quantity = Integer.parseInt(quantityText);
+
+        String name = fullProductName
+                .replace(quantityText, "")
+                .replace("×", "")
+                .toLowerCase()
+                .trim();
+
+        double price = Double.parseDouble(
+                productPrice
+                        .shouldBe(visible, Duration.ofSeconds(5))
+                        .getText()
+                        .replace("$", "")
+                        .trim()
+        );
 
         return new Product(name, price, quantity);
     }
+
 
     @Step("Filling billing information")
     public void fillBillingInfo(User user) {

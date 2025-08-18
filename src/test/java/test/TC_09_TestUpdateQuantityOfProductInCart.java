@@ -1,51 +1,73 @@
 package test;
 
+import model.Product;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+import pages.*;
+
 import static com.codeborne.selenide.Selenide.refresh;
 
-import enums.NavItems;
-import model.User;
-import org.testng.asserts.SoftAssert;
-import pages.CheckoutPage;
-import pages.HomePage;
-import pages.MyAccountPage;
-import pages.ProductDetailsPage;
-import pages.ProductsPage;
-import pages.ShoppingCartPage;
-
+@Test
 public class TC_09_TestUpdateQuantityOfProductInCart extends TestBase {
 
-  SoftAssert softAssert = new SoftAssert();
-  HomePage homePage = new HomePage();
-  MyAccountPage myAccountPage = new MyAccountPage();
-  ProductsPage productsPage = new ProductsPage();
-  ProductDetailsPage productDetailsPage = new ProductDetailsPage();
-  ShoppingCartPage shoppingCartPage = new ShoppingCartPage();
-  CheckoutPage checkoutPage = new CheckoutPage();
+    SoftAssert softAssert = new SoftAssert();
+    HomePage homePage = new HomePage();
+    MyAccountPage myAccountPage = new MyAccountPage();
+    ProductsPage productsPage = new ProductsPage();
+    ProductDetailsPage productDetailsPage = new ProductDetailsPage();
+    ShoppingCartPage shoppingCartPage = new ShoppingCartPage();
 
-  String quantity;
+    int expectedProductQuantity;
+    int actualProductQuantity;
 
-  public void TestUpdateQuantityOfProductInCart(User user) {
+    Product expectedProductAfterPlus;
+    Product actualProductAfterPlus;
+    Product expectProductAfterAdding4;
+    Product actualProductAfterAdding4;
+    Product expectedProductAfterMinus;
+    Product actualProductAfterMinus;
 
-    homePage.clickOnMyAccountButton();
+    public void TestUpdateQuantityOfProductInCart() {
 
-    myAccountPage.login(user);
+        homePage.clickOnMyAccountButton();
 
-    myAccountPage.clickOnNavItem(NavItems.SHOP.getItemName());
+        myAccountPage.login();
 
-    productsPage.selectRandomItem();
+        myAccountPage.navigateToShopPage();
 
-    productDetailsPage.ClickOnAddToCartBtn();
+        productsPage.selectRandomItem();
 
-    quantity = productDetailsPage.getProductQuantity();
+        productDetailsPage.clickOnAddToCartBtn();
 
-    productsPage.clickOnMyCartButton();
+        expectedProductQuantity = productDetailsPage.getProductQuantity();
 
-    refresh(); // Need refresh
+        productsPage.clickOnMyCartButton();
 
-    softAssert.assertEquals(shoppingCartPage.getProductQuantity(), quantity,
-        "verify quantity of added product");
+        refresh(); // Need refresh
 
+        actualProductQuantity = shoppingCartPage.getProductQuantity();
 
-  }
+        softAssert.assertEquals(actualProductQuantity, expectedProductQuantity,
+                "verify quantity of added product");
 
+        expectedProductAfterPlus = shoppingCartPage.getProductQtyAndSubAfterPlus(1);
+
+        actualProductAfterPlus = new Product(shoppingCartPage.getProductQuantity(), shoppingCartPage.getSubTotal());
+
+        softAssert.assertEquals(actualProductAfterPlus, expectedProductAfterPlus);
+
+        expectProductAfterAdding4 = shoppingCartPage.getProductQtyAndSubAfterPlus(4);
+
+        actualProductAfterAdding4 = new Product(shoppingCartPage.getProductQuantity(), shoppingCartPage.getSubTotal());
+
+        softAssert.assertEquals(expectProductAfterAdding4, actualProductAfterAdding4);
+
+        expectedProductAfterMinus = shoppingCartPage.getProductQtyAndSubAfterMinus(1);
+
+        actualProductAfterMinus = new Product(shoppingCartPage.getProductQuantity(), shoppingCartPage.getSubTotal());
+
+        softAssert.assertEquals(expectedProductAfterMinus, actualProductAfterMinus);
+
+        softAssert.assertAll();
+    }
 }

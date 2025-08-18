@@ -1,5 +1,6 @@
 package pages;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
@@ -12,9 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.*;
 
 @Slf4j
 public class ShoppingCartPage extends BasePage {
@@ -31,33 +31,135 @@ public class ShoppingCartPage extends BasePage {
     private final ElementsCollection productPrices = $$(By.xpath(productPriceLocator));
     private final SelenideElement productName = $(By.xpath(productNameLocator));
     private final SelenideElement proceedToCheckoutBtn = $(By.xpath(proceedToCheckoutBtnLocator));
-
+    private final String clearCartLocator = "//a[@class = 'clear-cart']";
+    private final SelenideElement clearCart = $(By.xpath(clearCartLocator));
+    private final String emptyCartMsgLocator = "//div[@class = 'cart-empty empty-cart-block']//h1";
+    private final SelenideElement emptyCartMsg = $(By.xpath(emptyCartMsgLocator));
+    private final String cartContentLocator = "//div[@class = 'container content-page sidebar-mobile-bottom']";
+    private final SelenideElement cartContent = $(By.xpath(cartContentLocator));
+    private final String loadingSpinnerLocator = "//div[@class = 'blockUI blockOverlay']";
+    private final SelenideElement loadingSpinner = $(By.xpath(loadingSpinnerLocator));
+    private final String plusBtnLocator = "//span[@class = 'plus']";
+    private final SelenideElement plusBtn = $(By.xpath(plusBtnLocator));
+    private final String minusBtnLocator = "//span[@class = 'minus']";
+    private final SelenideElement minusBtn = $(By.xpath(minusBtnLocator));
+    private final String quantityInputLocator = "//input[@class = 'input-text qty text']";
+    private final SelenideElement quantityInput = $(By.xpath(quantityInputLocator));
+    private final String productSubTotalLocator = "//td[@class = 'product-subtotal']//span//bdi";
+    private final SelenideElement productSubTotal = $(By.xpath(productSubTotalLocator));
+    private final String updateCartBtnLocator = "//button[@class = 'btn gray medium bordered']";
+    private final SelenideElement updateCartBtn = $(By.xpath(updateCartBtnLocator));
 
     @Step("Get product info")
     public Product getSingleProductInfo() {
-        log.info("Retrieving single product info from cart");
-        String name = productName.shouldBe(visible, Duration.ofSeconds(5))
+        String name = getProductName();
+        double price = getProductPrice();
+        int quantity = getProductQuantity();
+        return new Product(name, price, quantity);
+    }
+
+    @Step("Get product name")
+    public String getProductName() {
+        return productName
+                .shouldBe(visible, Duration.ofSeconds(5))
                 .scrollIntoView(false)
                 .getText()
                 .toLowerCase()
                 .trim();
+    }
 
-        String price = productPrice.shouldBe(visible, Duration.ofSeconds(5))
-                .scrollIntoView(false)
-                .getText()
-                .replace("$", "")
-                .trim();
+    @Step("Get product unit price")
+    public double getProductPrice() {
+        loadingSpinner.shouldBe(disappear);
+        return Double.parseDouble(
+                productPrice
+                        .shouldBe(visible, Duration.ofSeconds(5))
+                        .scrollIntoView(false)
+                        .getText()
+                        .replace('\u00A0', ' ')
+                        .replace("$", "")
+                        .replace(",", "")
+                        .replaceAll("[^0-9.\\-]", "")
+                        .trim()
+        );
+    }
 
-        String quantity = productQuantity.shouldBe(visible, Duration.ofSeconds(5))
-                .scrollIntoView(false)
-                .getValue();
+    @Step("Get product quantity")
+    public int getProductQuantity() {
+        loadingSpinner.shouldBe(disappear);
+        return Integer.parseInt(
+                productQuantity
+                        .shouldBe(visible, Duration.ofSeconds(5))
+                        .scrollIntoView(false)
+                        .getValue()
+                        .replaceAll("[^0-9]", "")
+                        .trim()
+        );
+    }
 
-        return new Product(name, price, quantity);
+    public double getSubTotal() {
+        loadingSpinner.shouldBe(disappear);
+        return Double.parseDouble(
+                productSubTotal
+                        .shouldBe(visible, Duration.ofSeconds(5))
+                        .scrollIntoView(false)
+                        .getText()
+                        .replace('\u00A0', ' ')
+                        .replace("$", "")
+                        .replace(",", "")
+                        .replaceAll("[^0-9.\\-]", "")
+                        .trim()
+        );
+    }
+
+    @Step("Get expected qty & subtotal after clicking '+' {numberOfClick} time(s)")
+    public Product getProductQtyAndSubAfterPlus(int numberOfClick) {
+        double price = getProductPrice();
+        int beforeQty = getProductQuantity();
+        int afterQty;
+        double afterTotal;
+
+        if (numberOfClick == 1) {
+            clickOnPlusBtn();
+            afterQty = beforeQty + numberOfClick;
+        } else {
+            setValueToQtyTextBox(numberOfClick);
+            afterQty = numberOfClick;
+        }
+
+        afterTotal = price * afterQty;
+        loadingSpinner.shouldBe(disappear);
+        productQuantity.shouldHave(Condition.value(String.valueOf(afterQty)), Duration.ofSeconds(5));
+
+        return new Product(afterQty, afterTotal);
+    }
+
+    @Step("Get expected qty & subtotal after clicking '-' {numberOfClick} time(s)")
+    public Product getProductQtyAndSubAfterMinus(int numberOfClick) {
+        double price = getProductPrice();
+        int beforeQty = getProductQuantity();
+        int afterQty;
+        double afterTotal;
+
+        if (numberOfClick == 1) {
+            clickOnMinusBtn();
+            afterQty = Math.max(1, beforeQty - numberOfClick);
+        } else {
+            setValueToQtyTextBox(numberOfClick);
+            afterQty = numberOfClick;
+        }
+
+        afterTotal = price * afterQty;
+        loadingSpinner.shouldBe(disappear);
+        productQuantity.shouldHave(Condition.value(String.valueOf(afterQty)), Duration.ofSeconds(5));
+
+        return new Product(afterQty, afterTotal);
     }
 
     @Step("Get all products (name, price, quantity) in cart")
     public List<Product> getAllProductsInCart() {
         log.info("Retrieving all products in cart");
+
         return IntStream.range(0, productsNames.size())
                 .mapToObj(i -> {
                     String name = productsNames.get(i)
@@ -67,18 +169,22 @@ public class ShoppingCartPage extends BasePage {
                             .toLowerCase()
                             .trim();
 
-                    String price = productPrices.get(i)
-                            .shouldBe(visible, Duration.ofSeconds(5))
-                            .scrollIntoView(false)
-                            .getText()
-                            .replace("$", "")
-                            .trim();
+                    double price = Double.parseDouble(
+                            productPrices.get(i)
+                                    .shouldBe(visible, Duration.ofSeconds(5))
+                                    .scrollIntoView(false)
+                                    .getText()
+                                    .replace("$", "")
+                                    .trim()
+                    );
 
-                    // in cart, usually quantity field is always present
-                    String quantity = productQuantities.get(i)
-                            .shouldBe(visible, Duration.ofSeconds(5))
-                            .scrollIntoView(false)
-                            .getValue();
+                    int quantity = Integer.parseInt(
+                            productQuantities.get(i)
+                                    .shouldBe(visible, Duration.ofSeconds(5))
+                                    .scrollIntoView(false)
+                                    .getValue()
+                                    .trim()
+                    );
 
                     log.info("Product found - Name: {}, Price: {}, Quantity: {}", name, price, quantity);
                     return new Product(name, price, quantity);
@@ -86,24 +192,20 @@ public class ShoppingCartPage extends BasePage {
                 .collect(Collectors.toList());
     }
 
-  @Step("click on checkout button")
-  public void clickCheckoutBtn() {
-    proceedToCheckoutBtn.click();
-  }
+    @Step("click on Clear cart")
+    public void clearShoppingCart() {
+        clearCart.scrollIntoView(false).click();
+        switchTo().alert().accept();
+    }
 
-  @Step("click on Clear cart")
-  public void clearShoppingCart() {
-    clearCart.scrollIntoView(false).click();
-    switchTo().alert().accept();
-  }
+    public String getEmptyCartMsg() {
+        return emptyCartMsg.shouldBe(visible).getText();
+    }
 
-  public String getEmptyCartMsg() {
-    return emptyCartMsg.shouldBe(visible).getText();
-  }
+    public boolean isCartEmpty() {
+        return cartContent.isDisplayed();
+    }
 
-  public boolean isCartEmpty() {
-    return cartContent.isDisplayed();
-  }
     @Step("click on checkout button")
     public void clickCheckoutBtn() {
         log.info("Clicking on 'Proceed to Checkout' button");
@@ -112,5 +214,25 @@ public class ShoppingCartPage extends BasePage {
                     .scrollIntoCenter()
                     .click();
         }
+    }
+
+    @Step("Click on plus button")
+    public void clickOnPlusBtn() {
+        plusBtn.shouldBe(enabled).click();
+        loadingSpinner.shouldBe(appear);
+    }
+
+    @Step("Click on minus button")
+    public void clickOnMinusBtn() {
+        minusBtn.shouldBe(enabled).click();
+        loadingSpinner.should(appear);
+    }
+
+    @Step("Set value to Qty textbox")
+    public void setValueToQtyTextBox(int num) {
+        loadingSpinner.shouldBe(disappear);
+        quantityInput.shouldBe(enabled).setValue(String.valueOf(num));
+        updateCartBtn.shouldBe(enabled).click();
+        loadingSpinner.shouldBe(appear);
     }
 }

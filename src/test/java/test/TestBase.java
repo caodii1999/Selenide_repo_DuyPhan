@@ -15,15 +15,15 @@ public class TestBase {
 
     @BeforeSuite(alwaysRun = true)
     public void globalSetup() {
-        EnvConfig config = new EnvConfig();
-
-        if (config.getRemoteUrl() != null && !config.getRemoteUrl().isEmpty()) {
-            Configuration.remote = config.getRemoteUrl();
-        } else {
-            Configuration.remote = null;
-        }
-
-        log.info("Selenium Grid Hub URL: {}", Configuration.remote);
+//        EnvConfig config = new EnvConfig();
+//
+//        if (config.getRemoteUrl() != null && !config.getRemoteUrl().isEmpty()) {
+//            Configuration.remote = config.getRemoteUrl();
+//        } else {
+//            Configuration.remote = null;
+//        }
+//
+//        log.info("Selenium Grid Hub URL: {}", Configuration.remote);
 
         Configuration.timeout = 15000;
         Configuration.pollingInterval = 250;

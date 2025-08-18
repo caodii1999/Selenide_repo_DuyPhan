@@ -91,11 +91,18 @@ public class ProductsPage extends BasePage {
                             .shouldBe(visible, Duration.ofSeconds(5))
                             .scrollIntoView(true)
                             .getText()
-                            .toLowerCase();
-                    String price = productPrices.get(i)
-                            .shouldBe(visible, Duration.ofSeconds(5))
-                            .getText().replace("$", "").trim();
-                    String quantity = "1";
+                            .toLowerCase()
+                            .trim();
+
+                    double price = Double.parseDouble(
+                            productPrices.get(i)
+                                    .shouldBe(visible, Duration.ofSeconds(5))
+                                    .getText()
+                                    .replace("$", "")
+                                    .trim()
+                    );
+
+                    int quantity = 1; // since adding one item per click
 
                     addToCartBtn.get(i)
                             .shouldBe(visible, Duration.ofSeconds(5))

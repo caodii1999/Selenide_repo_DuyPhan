@@ -25,29 +25,47 @@ public class ProductDetailsPage extends BasePage {
     private final SelenideElement productPrice = $(By.xpath(productPriceLocator));
     private final SelenideElement productQuantity = $(By.xpath(productQuantityLocator));
 
-
-    public Product getDetailProductInfo() {
-        log.info("Retrieving product details from product page");
-
-        String name = productName
+    @Step("Get product name")
+    public String getProductName() {
+        return productName
                 .shouldBe(visible, Duration.ofSeconds(3))
                 .scrollIntoView(false)
                 .getText()
                 .toLowerCase()
                 .trim();
+    }
 
-        String price = productPrice
-                .shouldBe(visible, Duration.ofSeconds(3))
-                .scrollIntoView(false)
-                .getText()
-                .replace("$", "")
-                .trim();
+    @Step("Get product unit price")
+    public double getProductPrice() {
+        return Double.parseDouble(
+                productPrice
+                        .shouldBe(visible, Duration.ofSeconds(3))
+                        .scrollIntoView(false)
+                        .getText()
+                        .replace('\u00A0', ' ')
+                        .replace("$", "")
+                        .replace(",", "")
+                        .replaceAll("[^0-9.\\-]", "")
+                        .trim()
+        );
+    }
 
-        String quantity = productQuantity
-                .shouldBe(visible, Duration.ofSeconds(3))
-                .scrollIntoView(false)
-                .getValue();
+    @Step("Get product quantity")
+    public int getProductQuantity() {
+        return Integer.parseInt(
+                productQuantity
+                        .shouldBe(visible, Duration.ofSeconds(3))
+                        .scrollIntoView(false)
+                        .getValue()
+                        .trim()
+        );
+    }
 
+    public Product getDetailProductInfo() {
+        log.info("Retrieving product details from product page");
+        String name = getProductName();
+        double price = getProductPrice();
+        int quantity = getProductQuantity();
         return new Product(name, price, quantity);
     }
 
