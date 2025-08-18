@@ -45,6 +45,15 @@ It follows the Page Object Model (POM) pattern for better structure and maintain
 
 Clone the repository:
 
-```bash
 git clone https://github.com/yourusername/your-repo-name.git
 cd your-repo-name
+
+## Test Results
+
+Here’s an example of the test results:
+
+![Test Results](images/test-results.png)
+
+![Fail Case Result](images/failcase-result.png)
+
+![Fail Case Results](images/failcase-results.png)
