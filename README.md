@@ -4,7 +4,7 @@ A comprehensive UI test automation framework built with Java, Selenide, and Test
 
 ## 🚀 Features
 
-- **Page Object Model (POM)** - Clean separation of test logic and page elements
+- **Page Object Model (POM)** - Clean separation of test logic and page elements 
 - **Selenide Integration** - Simplified Selenium WebDriver operations
 - **TestNG Framework** - Robust test execution and reporting
 - **Maven Build System** - Dependency management and project structure
